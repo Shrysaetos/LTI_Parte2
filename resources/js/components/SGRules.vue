@@ -31,7 +31,7 @@
         },
         methods: {
             getRules: function (id) {
-                this.securitygroups = [];
+                this.rules = [];
                 var vm = this;
                 axios.get('api/security_groups/')
                     .then(function (response){
@@ -53,7 +53,7 @@
                     })
             },
 
-            createSecurityGroup() {
+            createSecurityGroup: function() {
                 this.$router.push('/createRule');
             }
         },

@@ -53,6 +53,9 @@ const KeypairsComponent = Vue.component('keypairs-component', require('./compone
 const SecurityGroupsComponent = Vue.component('security-groups-component', require('./components/SecurityGroup.vue').default);
 const SGRulesComponent = Vue.component('s-g-rules-component', require('./components/SGRules.vue').default);
 
+//Floating IPs
+const FloatingIPsComponent = Vue.component('floatingips-component', require('./components/FloatingIP.vue').default);
+
 const routes = [
 
 	{
@@ -110,6 +113,11 @@ const routes = [
 		path: "/security_groups/{{id}}",
 		name: "security_groups_rules",
 		component: SGRulesComponent
+	},
+	{
+		path: "/floatingips",
+		name: "floatingips",
+		component: FloatingIPsComponent
 	}
 
 
