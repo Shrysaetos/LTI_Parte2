@@ -39,6 +39,7 @@ const NetworksComponent = Vue.component('networks-component', require('./compone
 
 //Flavors
 const FlavorsComponent = Vue.component('flavors-component', require('./components/Flavor.vue').default);
+const FlavorComponent = Vue.component('flavor-component', require('./components/IndividualFlavor.vue').default);
 
 //Volumes
 const CreateVolumeComponent = Vue.component('createVolume-component', require('./components/CreateVolume.vue').default);
@@ -52,7 +53,7 @@ const KeypairsComponent = Vue.component('keypairs-component', require('./compone
 
 //Security Groups
 const SecurityGroupsComponent = Vue.component('security-groups-component', require('./components/SecurityGroup.vue').default);
-const SGRulesComponent = Vue.component('s-g-rules-component', require('./components/SGRules.vue').default);
+const SGRulesComponent = Vue.component('s-g-rules-component', require('./components/SecurityGroupRules.vue').default);
 
 //Floating IPs
 const FloatingIPsComponent = Vue.component('floatingips-component', require('./components/FloatingIP.vue').default);
@@ -96,6 +97,11 @@ const routes = [
 		component: FlavorsComponent
 	},
 	{
+		path: "/flavor/:id",
+		name: "flavor",
+		component: FlavorComponent
+	},
+	{
 		path: "/images",
 		name: "images",
 		component: ImagesComponent
@@ -116,7 +122,7 @@ const routes = [
 		component: SecurityGroupsComponent
 	},
 	{
-		path: "/security_groups/{{id}}",
+		path: "/security_groups/:id",
 		name: "security_groups_rules",
 		component: SGRulesComponent
 	},

@@ -26,8 +26,8 @@
                     <td v-if='i.image==""'>-</td>
                     <td v-if='i.image!=""'>{{i.image}}</td>
                     <td>{{i.addresses.shared[0].addr}}</td>
-                    <td v-for='f in flavors.flavors' v-if='i.flavor.id == f.id'> <router-link to='/flavor/id'>{{f.name}}</router-link></td>
-                    <td> <router-link to='/keypair/id'>{{i.key_name}}</router-link></td>
+                    <td v-for='f in flavors.flavors' v-if='i.flavor.id == f.id'> <router-link :to="{ name: 'flavor', params: {id: f.id}}">{{f.name}}</router-link></td>
+                    <td>{{i.key_name}}</td>
                     <td>{{i["OS-EXT-STS:vm_state"]}}</td>
                     <td>{{i["OS-EXT-AZ:availability_zone"]}}</td>
                     <td v-if='i["OS-EXT-STS:task_state"] == null'>None</td>

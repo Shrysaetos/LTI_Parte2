@@ -8,21 +8,19 @@
     	<table class="table">
         	<thead>
         	    <tr>
-        	        <th>Name</th>
-                    <th>Security Group ID</th>
+        	        <th>Direction</th>
+                    <th>Ethertype</th>
+                    <th>Protocol</th>
+                    <th>Port Range</th>
+                    <th>Remote IP Prefix</th>
+                    <th>Remote Security Group</th>
                     <th>Description</th>
                     <th>Actions</th>
         	    </tr>
        		</thead>
         	<tbody>
-                <tr v-for='s in securitygroups.security_groups'>
-                    <td>{{s.name}}</td>
-                    <td>{{s.id}}</td>
-                    <td>{{s.description}}</td>
-                    <td>
-                        <button class="btn btn-info"> <router-link :to="{ name: 'security_groups_rules', params: {id: s.id}}">Manage Rules </router-link></button>
-                        <button type="button" class="btn btn-danger" v-on:click.prevent="deleteSecurityGroup(s)">Delete</button>
-                    </td>
+                <tr v-for='s in securitygroups.security_groups' && 'r in s.security_group_rules' v-if='s.id == securitygroupID'>
+                    <td>{{r.direction}}</td>
                 </tr>
         	</tbody>
     	</table>
@@ -33,6 +31,7 @@
         data() {
             return {
                 securitygroups: [],
+                securitygroupID: 0,
             };
         },
         methods: {
@@ -48,27 +47,28 @@
                     });
             },
 
+            getSecurityGroupID: function () {
+                this.securitygroupID = this.$route.params.id;
+            },
+
             goBack() {
                 this.$router.push('/security_groups');
             },
 
-            manageRules: function (id) {
-                this.$router.push('/security_group/'+ id);
-            },
-
-            deleteSecurityGroup: function(securitygroup) {
-                axios.delete('api/SecurityGroup' + securitygroup.id)
+            deleteRule: function(rule) {
+                axios.delete('api/SecurityGroup' + rule.id)
                     .then(response => {
                         this.getSecurityGroups();
                     })
             },
 
-            createSecurityGroup() {
-                this.$router.push('/createSecurityGroup');
+            createRule() {
+                this.$router.push('/createRule');
             }
         },
         mounted() {
             this.getSecurityGroups();
+            this.getSecurityGroupID();
         }
     };
 </script>
