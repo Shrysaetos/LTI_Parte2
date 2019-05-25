@@ -18,9 +18,27 @@
                     <th>Actions</th>
         	    </tr>
        		</thead>
-        	<tbody>
-                <tr v-for='s in securitygroups.security_groups' && 'r in s.security_group_rules' v-if='s.id == securitygroupID'>
-                    <td>{{r.direction}}</td>
+        	<tbody v-for='s in securitygroups.security_groups' v-if='s.id == securitygroupID'>
+                <tr v-for='r in s.security_group_rules'>
+                        <td>{{r.direction | capitalize}}</td>
+                        <td>{{r.ethertype}}</td>
+                        <td v-if='r.protocol == null'>Any</td>
+                        <td v-if='r.protocol != null'>{{r.protocol}}}</td>
+                        <td v-if='r.port_range_max == null && r.port_range_min == null'>Any</td>
+                        <td v-if='r.port_range_max == null && r.port_range_min != null'>{{r.port_range_min}} - Any</td>
+                        <td v-if='r.port_range_max != null && r.port_range_min == null'>Any - {{r.port_range_max}}</td>
+                        <td v-if='r.port_range_max != null && r.port_range_min != null'>{{r.port_range_min}} - {{r.port_range_max}}</td>
+                        <td v-if='r.remote_ip_prefix != null'>{{r.remote_ip_prefix}}</td>
+                        <td v-if='r.remote_ip_prefix == null && r.direction == "egress" && r.ethertype == "IPv4"'>0.0.0.0/0</td>
+                        <td v-if='r.remote_ip_prefix == null && r.direction == "egress" && r.ethertype == "IPv6"'>::/0</td>
+                        <td v-if='r.remote_ip_prefix == null && r.direction == "ingress"'> - </td>
+                        <td v-if='r.remote_group_id == null'> - </td>
+                        <td v-if='r.remote_group_id != null'>{{s.name}}</td>
+                        <td v-if='r.description == null'> - </td>
+                        <td v-if='r.description != null'>{{r.description}}</td>
+                        <td>
+                            <button type="button" class="btn btn-danger" v-on:click.prevent="deleteRule(r)">Delete</button>
+                        </td>
                 </tr>
         	</tbody>
     	</table>
@@ -34,6 +52,15 @@
                 securitygroupID: 0,
             };
         },
+
+        filters: {
+            capitalize: function (value) {
+                if (!value) return ''
+                    value = value.toString()
+                    return value.charAt(0).toUpperCase() + value.slice(1)
+            }
+        },
+
         methods: {
             getSecurityGroups: function () {
                 this.securitygroups = [];

@@ -17,7 +17,7 @@
         	<tbody>
                 <tr v-for='i in images.images'>
                     <td>{{i.name}}</td>
-                    <td>{{i.status}}</td>
+                    <td>{{i.status | capitalize}}</td>
                     <td v-if='i.protected == false'>No</td>
                     <td v-if='i.protected == true'>Yes</td>
                     <td v-if='i.visibility == "public"'>Yes</td>
@@ -38,6 +38,15 @@
                 images: [],
             };
         },
+
+        filters: {
+            capitalize: function (value) {
+                if (!value) return ''
+                    value = value.toString()
+                    return value.charAt(0).toUpperCase() + value.slice(1)
+            }
+        },
+
         methods: {
             getImages: function () {
                 this.images = [];

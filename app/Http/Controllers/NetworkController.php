@@ -40,4 +40,20 @@ class NetworkController extends Controller
 
 		return $response;
     }
+
+    public function getSubnets(){
+        $client = new \GuzzleHttp\Client();
+        $url = 'http://46.101.65.213:9696/v2.0/subnets';
+        $token = $this->getToken();
+
+        
+        $response = $client->request('GET', $url, [
+            'headers' => [
+                'x-auth-token' => $token,
+            ]
+        ]);
+
+
+        return $response;
+    }
 }

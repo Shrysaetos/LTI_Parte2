@@ -11,6 +11,7 @@
         	        <th>Name</th>
                     <th>Fingerprint</th>
                     <th>Public key</th>
+                    <th>Actions</th>
         	    </tr>
        		</thead>
         	<tbody>
@@ -18,7 +19,7 @@
                     <td>{{k.keypair.name}}</td>
                     <td>{{k.keypair.fingerprint}}</td>
                     <td v-line-clamp="lines">{{k.keypair.public_key}}</td>
-                    <td
+                    <td>
                         <button class="btn btn-info" v-on:click.prevent="editKeypair">Edit</button>
                         <button type="button" class="btn btn-danger" v-on:click.prevent="deleteKeypair(k)">Delete</button>
                     </td>

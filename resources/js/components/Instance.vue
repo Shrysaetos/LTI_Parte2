@@ -17,7 +17,7 @@
                     <th>Availability Zone</th>
                     <th>Task</th>
                     <th>Power State</th>
-                    <th>Ações</th>
+                    <th>Actions</th>
         	    </tr>
        		</thead>
         	<tbody>
@@ -28,7 +28,7 @@
                     <td>{{i.addresses.shared[0].addr}}</td>
                     <td v-for='f in flavors.flavors' v-if='i.flavor.id == f.id'> <router-link :to="{ name: 'flavor', params: {id: f.id}}">{{f.name}}</router-link></td>
                     <td>{{i.key_name}}</td>
-                    <td>{{i["OS-EXT-STS:vm_state"]}}</td>
+                    <td>{{i["OS-EXT-STS:vm_state"] | capitalize}}</td>
                     <td>{{i["OS-EXT-AZ:availability_zone"]}}</td>
                     <td v-if='i["OS-EXT-STS:task_state"] == null'>None</td>
                     <td v-if='i["OS-EXT-STS:task_state"] != null'>{{i["OS-EXT-STS:task_state"]}}</td>
@@ -50,6 +50,15 @@
                 flavors: [],
             };
         },
+
+        filters: {
+            capitalize: function (value) {
+                if (!value) return ''
+                    value = value.toString()
+                    return value.charAt(0).toUpperCase() + value.slice(1)
+            }
+        },
+
         methods: {
             getInstances: function () {
                 this.instances = [];

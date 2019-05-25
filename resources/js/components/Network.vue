@@ -9,7 +9,6 @@
         	<thead>
         	    <tr>
         	        <th>Name</th>
-        	        <th>Subnets</th>
         	        <th>Shared</th>
                     <th>External</th>
                     <th>Status</th>
@@ -21,8 +20,7 @@
        		</thead>
         	<tbody>
                 <tr v-for='n in networks.networks'>
-                    <td><router-link to='/'>{{n.name}}</router-link></td>
-                    <td>TODO</td>
+                    <td><router-link :to="{ name: 'subnets', params: {id: n.id}}">{{n.name}}</router-link></td>
                     <td v-if='n.shared == true'>Yes</td>
                     <td v-if='n.shared == false'>No</td>
                     <td v-if='n["router:external"] == true'>Yes</td>
@@ -49,6 +47,7 @@
                 networks: [],
             };
         },
+
         methods: {
             getNetworks: function () {
                 this.networks = [];

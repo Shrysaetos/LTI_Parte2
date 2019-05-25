@@ -48,6 +48,7 @@ Route::get('flavors', 'FlavorController@getFlavors');
 
 //Networks
 Route::get('networks', 'NetworkController@getNetworks');
+Route::get('subnets', 'NetworkController@getSubnets');
 
 //Security Groups
 Route::get('security_groups', 'SecurityGroupController@getSecurityGroups');

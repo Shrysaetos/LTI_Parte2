@@ -10,16 +10,16 @@
         <table class="table">
                 <thead>
                     <tr>
-                        <th>Nome</th>
-                        <th>Tamanho</th>
+                        <th>Name</th>
+                        <th>Size</th>
                         <th>Status</th>
-                        <th>Grupo</th>
-                        <th>Tipo</th>
-                        <th>Anexado a</th>
-                        <th>Zona de Disponibilidade</th>
+                        <th>Group</th>
+                        <th>Type</th>
+                        <th>Attached to</th>
+                        <th>Availability Zone</th>
                         <th>Bootable</th>
-                        <th>Encriptado</th>
-                        <th>Ações</th>
+                        <th>Encrypted</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,10 +33,10 @@
                         <td v-if= 'v.attachments.length != 0' v-for= 'a in v.attachments'>{{a.device}}</td>
                         <td v-if= 'v.attachments.length == 0'>-</td>
                         <td>{{v.availability_zone}}</td>
-                        <td v-if='v.bootable=="false"'>Não</td>
-                        <td v-if='v.bootable=="true"'>Sim</td>
-                        <td v-if='v.encrypted==false'>Não</td>
-                        <td v-if='v.encrypted==true'>Sim</td>
+                        <td v-if='v.bootable=="false"'>No</td>
+                        <td v-if='v.bootable=="true"'>Yes</td>
+                        <td v-if='v.encrypted==false'>No</td>
+                        <td v-if='v.encrypted==true'>Yes</td>
                         <td>
                             <button class="btn btn-info" v-on:click.prevent="editVolume">Edit</button>
                             <button type="button" class="btn btn-danger" v-on:click.prevent="deleteVolume(v)">Delete</button>

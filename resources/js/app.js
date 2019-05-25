@@ -36,7 +36,7 @@ const InstancesComponent = Vue.component('instances-component', require('./compo
 
 //Networks
 const NetworksComponent = Vue.component('networks-component', require('./components/Network.vue').default);
-
+const SubnetsComponent = Vue.component('subnets-component', require('./components/Subnet.vue').default);
 //Flavors
 const FlavorsComponent = Vue.component('flavors-component', require('./components/Flavor.vue').default);
 const FlavorComponent = Vue.component('flavor-component', require('./components/IndividualFlavor.vue').default);
@@ -115,6 +115,11 @@ const routes = [
 		path: "/networks",
 		name: "networks",
 		component: NetworksComponent
+	},
+	{
+		path: "/subnets/:id",
+		name: "subnets",
+		component: SubnetsComponent
 	},
 	{
 		path: "/security_groups",
