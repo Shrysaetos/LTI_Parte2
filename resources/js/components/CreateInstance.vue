@@ -1,4 +1,4 @@
-<template>
+<template> 
   <div>
     <div class="jumbotron">
       <h1>Create Instance</h1>
@@ -12,9 +12,10 @@
         <div>
             <ul>
                 <li>
-                    <label>Instance Name</label>
+                    <label>Name</label>
+                    <font v-if="name==''" size="3" color="red">*</font>
                     <div>
-                        <input v-model="name" placeholder="Instance name">
+                        <input v-model="name" placeholder="Instance name" required >
                     </div>
                 </li>
             </ul>
@@ -34,6 +35,7 @@
             <ul>
                 <li>
                     <label>Availability Zone</label>
+                    <font v-if="zone==''" size="3" color="red">*</font>
                     <div>
                         <select v-model="zone">
                             <option disabled value="">Please select one</option>
@@ -50,7 +52,8 @@
         <div>
             <ul>
                 <li>
-                    <label>Image ID </label>
+                    <label>Image </label>
+                    <font v-if="image==''" size="3" color="red">*</font>
                     <div>
                         <select v-model="image">
                             <option disabled value="">Please select one</option>
@@ -61,15 +64,8 @@
             </ul>
             <ul>
                 <li>
-                    <label>Volume Name</label>
-                    <div>
-                        <input v-model="volumeName" placeholder="Volume name">
-                    </div>
-                </li>
-            </ul>
-            <ul>
-                <li>
                     <label>Volume size</label>
+                    <font v-if="size==''" size="3" color="red">*</font>
                     <div>
                         <input type="number" v-model="size" :min="0">
                     </div>
@@ -83,6 +79,7 @@
             <ul>
                 <li>
                     <label>Flavor</label>
+                    <font v-if="flavor==''" size="3" color="red">*</font>
                     <div>
                         <select v-model='flavor'>
                             <option disable value="">Please select one</option>
@@ -100,6 +97,7 @@
             <ul>
                 <li>
                     <label>Network</label>
+                    <font v-if="networkName==''" size="3" color="red">*</font>
                     <div>
                         <select v-model='networkName'>
                             <option disable value="">Please select one</option>
@@ -116,7 +114,8 @@
         <div>
             <ul>
                 <li>
-                    <label>Select key par</label>
+                    <label>Key par</label>
+                    <font v-if="keypair==''" size="3" color="red">*</font>
                     <div>
                         <select v-model='keypair'>
                             <option disable value="">Please select one</option>
@@ -131,7 +130,7 @@
   
     <br><br>
     <div>
-        <button type="button" class="btn btn-outline-success" v-on:click.prevent='createInstance(name, description, zone, volumeName, size, networkName, keypair)'>Create Instance</button>
+        <button type="button" class="btn btn-outline-success" :disabled="validateCreate" v-on:click.prevent='createInstance(name, description, zone, size, networkName, keypair)'>Create Instance</button>
         <button type="button" class="btn btn-outline-danger" v-on:click.prevent="goBack">Cancel</button>
     </div>
 
@@ -163,7 +162,6 @@
                 flavorId: '',
                 network: '',
                 keypair: '',
-                volumeName: '',
                 networkId: '',
                 networkName: '',
                 typeofmsg: "alert-success",
@@ -229,13 +227,13 @@
                         vm.keyPairInfo = 'An error occurred.' + error;
                     });
             },
-            createInstance: function (name, description, zone, volumeName, size, networkName, keypair) {
+            createInstance: function (name, description, zone, size, networkName, keypair) {
                 this.instanceInfo = [];
                 var vm = this;
                 this.getImageId();
                 this.getNetworkId();
                 this.getFlavorId();
-                //Verificação variaveis
+                //Verificação variaveis (precisa de ser melhorado)
                 if (this.name == '') {
                     name = 'null';
                 }else{
@@ -251,10 +249,6 @@
                 } else {
                     this.showMessage = false;
                     zone = '"' + zone + '"';
-                } if (this.volumeName == '') {
-                    volumeName = 'null';
-                } else {
-                    volumeName = '"' + volumeName + '"';
                 } if (this.keypair == '') {
                     this.typeofmsg = "alert-danger";
                     this.message = "Please Select a key pair";
@@ -271,7 +265,7 @@
                 networkName = '"' + networkName + '"';
 
 
-                axios.post('api/createInstance/' + name + '/' + description + '/' + zone + '/' + vm.imageId + '/' + volumeName + '/' + size + '/' + vm.flavorId + '/' + vm.networkId + '/' + networkName + '/' + keypair)
+                axios.post('api/createInstance/' + name + '/' + description + '/' + zone + '/' + vm.imageId + '/' + size + '/' + vm.flavorId + '/' + vm.networkId + '/' + networkName + '/' + keypair)
                     .then(function (response){
                         vm.instanceInfo = response.data;
                     })
@@ -279,7 +273,7 @@
                         vm.instanceInfo = 'An error occurred.' + error;
                     });
             },
-            getImageId: function (image) {
+            getImageId: function () {
                 var vm = this
                 if (vm.image == '') {
                     this.typeofmsg = "alert-danger";
@@ -332,6 +326,11 @@
             goBack() {
                 this.$router.push('/instances');
             },
+        },
+        computed: {
+            validateCreate() {
+              return this.name == '' || this.zone == '' || this.image == '' || this.size == '' || this.flavor == '' || this.networkName == '' || this.keypair == '';
+            }
         },
         mounted() {
             this.listImages();

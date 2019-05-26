@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 use Illuminate\Http\Request;
 
@@ -33,15 +33,19 @@ Route::post('createVolume', 'VolumeController@createVolume');
 
 //Key Pairs
 Route::get('keypairs', 'KeypairController@getKeypairs');
+	//create
+Route::post('createKeypair/{name}/{type}/{publicKey}', 'KeypairController@createKeypair');
 
 //Images
 Route::get('images', 'ImageController@getImages');
+	//create
+Route::post('createImage/{name}/{format}/{location}/{disk}/{ram}/{visibility}/{protected}/', 'ImageController@createImage');
 
 //Instances
 Route::get('instances', 'InstanceController@getInstances');
 	//create
 Route::get('zones', 'InstanceController@getZones');
-Route::post('createInstance/{name}/{description}/{zone}/{image}/{volumeName}/{size}/{flavor}/{networkId}/{networkName}/{keypair}', 'InstanceController@createInstance');
+Route::post('createInstance/{name}/{description}/{zone}/{image}/{size}/{flavor}/{networkId}/{networkName}/{keypair}', 'InstanceController@createInstance');
 
 //Flavors
 Route::get('flavors', 'FlavorController@getFlavors');

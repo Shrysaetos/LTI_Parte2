@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 namespace App\Http\Controllers;
 
@@ -49,7 +49,7 @@ class VolumeController extends Controller
         ]);
 
 
-        return $token;
+        return $response;
 
     }
 

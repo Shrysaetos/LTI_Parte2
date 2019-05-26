@@ -1,5 +1,5 @@
-<?php
-
+<?php 
+ 
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request as IlluRequest;
@@ -26,19 +26,19 @@ class InstanceController extends Controller
     }
 
     public function getInstances(){
-    	$client = new \GuzzleHttp\Client();
-    	$url = 'http://46.101.65.213/compute/v2.1/servers/detail';
-    	$token = $this->getToken();
+        $client = new \GuzzleHttp\Client();
+        $url = 'http://46.101.65.213/compute/v2.1/servers/detail';
+        $token = $this->getToken();
 
-    	
-    	$response = $client->request('GET', $url, [
-    		'headers' => [
-    			'x-auth-token' => $token,
-    		]
-		]);
+        
+        $response = $client->request('GET', $url, [
+            'headers' => [
+                'x-auth-token' => $token,
+            ]
+        ]);
 
 
-		return $response;
+        return $response;
     }
 
     public function getZones(){
@@ -55,12 +55,12 @@ class InstanceController extends Controller
         return $response;
     }
 
-    public function createInstance($name, $description, $zone, $image, $volumeName, $size, $flavor, $networkId, $networkName, $keypair){
+    public function createInstance($name, $description, $zone, $image, $size, $flavor, $networkId, $networkName, $keypair){
         $client = new \GuzzleHttp\Client();
         $url = '46.101.65.213/compute/v2/servers';
         $token = $this->getToken();
 
-        $body = '{ "server" : { "name" : '.$name.', "description" : '.$description.', "key_name" : '.$keypair.', "availability_zone": '.$zone.', "flavorRef" : '.$flavor.', "networks" : [{ "uuid" : '.$networkId.', "tag": '.$networkName.' }], "block_device_mapping_v2": [{ "uuid": '.$image.', "source_type": "image", "destination_type": "volume", "boot_index": 0, "volume_size": '.$size.', "tag": '.$volumeName.' }] } }';
+        $body = '{ "server" : { "name" : '.$name.', "description" : '.$description.', "key_name" : '.$keypair.', "availability_zone": '.$zone.', "flavorRef" : '.$flavor.', "networks" : [{ "uuid" : '.$networkId.', "tag": '.$networkName.' }], "block_device_mapping_v2": [{ "uuid": '.$image.', "source_type": "image", "destination_type": "volume", "boot_index": 0, "volume_size": '.$size.', "tag": "createdByApp" }] } }';
         
 
         $response = $client->request('POST', $url, [

@@ -1,5 +1,5 @@
 <?php
-
+ 
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request as IlluRequest;
@@ -39,5 +39,39 @@ class KeypairController extends Controller
 
 
 		return $response;
+    }
+
+    public function createKeypair($name, $type, $publicKey){
+
+        $client = new \GuzzleHttp\Client();
+        $url = '46.101.65.213/compute/v2/os-keypairs';
+
+        if($type == 'SSH key'){ //body ssh
+            if($publicKey == 'null'){
+                $body = '{ "keypair": { "name": "'.$name.'", "type": "ssh", "user_id": "fake" } }';
+            }else{
+                $body = '{ "keypair": { "name": "'.$name.'", "type": "ssh", "public_key": '.$publicKey.', "user_id": "fake" } }';
+            }
+        }
+        else{ //type == x509
+            if($publicKey == 'null'){
+                $body = '{ "keypair": { "name": "'.$name.'", "type": "X509", "user_id": "fake" } }';
+            }else{
+                $body = '{ "keypair": { "name": "'.$name.'", "type": "X509", "public_key": '.$publicKey.', "user_id": "fake" } }';
+            }
+        }
+        
+
+        $response = $client->request('POST', $url, [
+            'headers' => [
+                'x-auth-token' => $this->getToken(),
+                'Content-Type' => 'application/json',
+            ],
+            'body' => $body
+        ]);
+
+
+        return $response;
+
     }
 }

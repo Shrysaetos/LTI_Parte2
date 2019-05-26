@@ -3,7 +3,7 @@
         <div class="jumbotron">
             <h1>Images</h1>
         </div>
-        <button class="btn btn-info col-lg-2 control-label" v-on:click.prevent="createFlavor">Create Image</button>
+        <button class="btn btn-info col-lg-2 control-label" v-on:click.prevent="createImage">Create Image</button>
         <button type="button" class="btn btn-outline-danger" v-on:click.prevent="goBack">Cancel</button>
     	<table class="table">
         	<thead>

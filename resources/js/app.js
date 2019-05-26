@@ -47,9 +47,13 @@ const VolumesComponent = Vue.component('volumes-component', require('./component
 
 //Images
 const ImagesComponent = Vue.component('images-component', require('./components/Image.vue').default);
+	//create
+const CreateImageComponent = Vue.component('createimage-component', require('./components/CreateImage.vue').default);
 
 //Key Pairs
 const KeypairsComponent = Vue.component('keypairs-component', require('./components/Keypair.vue').default);
+	//create
+const CreateKeypairComponent = Vue.component('createkeypair-component', require('./components/CreateKeyPair.vue').default);
 
 //Security Groups
 const SecurityGroupsComponent = Vue.component('security-groups-component', require('./components/SecurityGroup.vue').default);
@@ -107,9 +111,19 @@ const routes = [
 		component: ImagesComponent
 	},
 	{
+		path: "/createImage",
+		name: "createImage",
+		component: CreateImageComponent
+	},
+	{
 		path: "/keypairs",
 		name: "keypairs",
 		component: KeypairsComponent
+	},
+	{
+		path: "/createKeypair",
+		name: "createKeypair",
+		component: CreateKeypairComponent
 	},
 	{
 		path: "/networks",

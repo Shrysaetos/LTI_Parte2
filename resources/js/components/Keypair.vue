@@ -59,7 +59,7 @@
                     })
             },
 
-            createImage() {
+            createKeypair() {
                 this.$router.push('/createKeypair');
             }
         },

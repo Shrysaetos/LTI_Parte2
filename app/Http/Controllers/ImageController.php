@@ -40,4 +40,39 @@ class ImageController extends Controller
 
 		return $response;
     }
+
+    public function createImage($name, $format, $location, $disk, $ram, $visibility, $protected){
+        $client = new \GuzzleHttp\Client();
+        $url = '46.101.65.213/image/v2/images';
+
+        $locationFinal = str_replace("]","/",$location);
+        
+        if ($ram == 'null' && $disk == 'null') {
+            $body = '{ "disk_format": '.$format.', "name": '.$name.', "visibility": '.$visibility.', "protected ": '.$protected.', "location": '.$locationFinal.' }';
+        }else{
+            //se nao forem os dois nulos o body vai ser completo
+            $body = '{ "disk_format": '.$format.', "name": '.$name.', "min_disk": '.$disk.', "min_ram": '.$ram.', "visibility": '.$visibility.', "protected ": '.$protected.', "location": '.$locationFinal.' }';
+
+            //o body muda caso apenas um dois dois seja null
+            if ($disk == 'null') {
+            $body = '{ "disk_format": '.$format.', "name": '.$name.', "min_ram": '.$ram.', "visibility": '.$visibility.', "protected ": '.$protected.', "location": '.$locationFinal.' }';
+            }
+            if ($ram == 'null') {
+                $body = '{ "disk_format": '.$format.', "name": '.$name.', "min_disk": '.$disk.', "visibility": '.$visibility.', "protected ": '.$protected.', "location": '.$locationFinal.' }';
+            }
+
+        }        
+        
+
+        $response = $client->request('POST', $url, [
+            'headers' => [
+                'x-auth-token' => $this->getToken(),
+                'Content-Type' => 'application/json',
+            ],
+            'body' => $body
+        ]);
+
+
+        return $response;
+    }
 }
