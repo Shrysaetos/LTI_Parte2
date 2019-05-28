@@ -1,4 +1,4 @@
-<template>
+<template> 
   <div>
     <div class="jumbotron">
       <h1>Volumes</h1>
@@ -39,7 +39,7 @@
                         <td v-if='v.encrypted==true'>Yes</td>
                         <td>
                             <button class="btn btn-info" v-on:click.prevent="editVolume">Edit</button>
-                            <button type="button" class="btn btn-danger" v-on:click.prevent="deleteVolume(v)">Delete</button>
+                            <button type="button" class="btn btn-danger" v-on:click.prevent="deleteVolume(v.id)">Delete</button>
                         </td>
                     </tr>
                 </tbody>
@@ -59,6 +59,7 @@
                 volumes: [],
                 count: 0,
                 name,
+                consistencygroup_id: '',
             };
         },
         methods: {
@@ -78,7 +79,12 @@
             
             createVolume: function () {
                 this.$router.push('/createVolume');
-            },                        
+            },  
+
+            deleteVolume: function (volumeID) {
+                var vm = this;
+                axios.delete('api/deleteVolume/' +volumeID);
+            },                  
             goBack() {
                 this.$router.push('/login');
             },

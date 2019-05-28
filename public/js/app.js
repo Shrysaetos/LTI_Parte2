@@ -2740,12 +2740,8 @@ module.exports = {
     goBack: function goBack() {
       this.$router.push('/image');
     },
-    deleteImage: function deleteImage(image) {
-      var _this = this;
-
-      axios["delete"]('api/images' + image.id).then(function (response) {
-        _this.getImages();
-      });
+    deleteImage: function deleteImage(imageID) {
+      axios["delete"]('api/deleteImage/' + imageID);
     },
     createImage: function createImage() {
       this.$router.push('/createImage');
@@ -2913,12 +2909,8 @@ module.exports = {
     goBack: function goBack() {
       this.$router.push('/instances');
     },
-    deleteInstance: function deleteInstance(flow) {
-      var _this = this;
-
-      axios["delete"]('api/instances' + flow.id).then(function (response) {
-        _this.getFlavors();
-      });
+    deleteInstance: function deleteInstance(instanceID) {
+      axios["delete"]('api/deleteInstance/' + instanceID);
     },
     createInstance: function createInstance() {
       this.$router.push('/createInstance');
@@ -2938,6 +2930,8 @@ module.exports = {
   \******************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 //
 //
@@ -2972,10 +2966,11 @@ module.exports = {
 module.exports = {
   data: function data() {
     return {
-      keypairs: []
+      keypairs: [],
+      lines: ''
     };
   },
-  methods: {
+  methods: _defineProperty({
     getKeypairs: function getKeypairs() {
       this.keypairs = [];
       var vm = this;
@@ -2998,7 +2993,10 @@ module.exports = {
     createKeypair: function createKeypair() {
       this.$router.push('/createKeypair');
     }
-  },
+  }, "deleteKeypair", function deleteKeypair(keypairName) {
+    var vm = this;
+    axios["delete"]('api/deleteKeypair/' + keypairName);
+  }),
   mounted: function mounted() {
     this.getKeypairs();
   }
@@ -3475,7 +3473,8 @@ module.exports = {
     return {
       volumes: [],
       count: 0,
-      name: name
+      name: name,
+      consistencygroup_id: ''
     };
   },
   methods: {
@@ -3490,6 +3489,10 @@ module.exports = {
     },
     createVolume: function createVolume() {
       this.$router.push('/createVolume');
+    },
+    deleteVolume: function deleteVolume(volumeID) {
+      var vm = this;
+      axios["delete"]('api/deleteVolume/' + volumeID);
     },
     goBack: function goBack() {
       this.$router.push('/login');
@@ -40543,7 +40546,7 @@ var render = function() {
                 on: {
                   click: function($event) {
                     $event.preventDefault()
-                    return _vm.deleteImage(i)
+                    return _vm.deleteImage(i.id)
                   }
                 }
               },
@@ -40811,7 +40814,7 @@ var render = function() {
                     on: {
                       click: function($event) {
                         $event.preventDefault()
-                        return _vm.deleteInstance(_vm.f)
+                        return _vm.deleteInstance(i.id)
                       }
                     }
                   },
@@ -40967,7 +40970,7 @@ var render = function() {
                   on: {
                     click: function($event) {
                       $event.preventDefault()
-                      return _vm.deleteKeypair(k)
+                      return _vm.deleteKeypair(k.keypair.name)
                     }
                   }
                 },
@@ -41844,7 +41847,7 @@ var render = function() {
                       on: {
                         click: function($event) {
                           $event.preventDefault()
-                          return _vm.deleteVolume(v)
+                          return _vm.deleteVolume(v.id)
                         }
                       }
                     },

@@ -75,4 +75,17 @@ class ImageController extends Controller
 
         return $response;
     }
+
+
+    public function deleteImage($imageID){
+        $client = new \GuzzleHttp\Client();
+        $url = '46.101.65.213/image/v2/images/'.$imageID;
+        $token = $this->getToken();
+
+        $client->request('DELETE', $url, [
+            'headers' => [
+                'x-auth-token' => $token,
+            ]
+        ]);
+    }
 }

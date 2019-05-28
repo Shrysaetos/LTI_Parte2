@@ -24,7 +24,7 @@
                     <td v-if='i.visibility != "public"'>No</td>
                     <td
                         <button class="btn btn-info" v-on:click.prevent="editImage">Edit</button>
-                        <button type="button" class="btn btn-danger" v-on:click.prevent="deleteImage(i)">Delete</button>
+                        <button type="button" class="btn btn-danger" v-on:click.prevent="deleteImage(i.id)">Delete</button>
                     </td>
                 </tr>
         	</tbody>
@@ -64,12 +64,8 @@
                 this.$router.push('/image');
             },
 
-            deleteImage: function(image) {
-                axios.delete('api/images' + image.id)
-                    .then(response => {
-                        this.getImages();
-                    })
-            },
+            deleteImage: function(imageID) {
+                axios.delete('api/deleteImage/' +imageID);            },
 
             createImage() {
                 this.$router.push('/createImage');

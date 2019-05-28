@@ -21,7 +21,7 @@
                     <td v-line-clamp="lines">{{k.keypair.public_key}}</td>
                     <td>
                         <button class="btn btn-info" v-on:click.prevent="editKeypair">Edit</button>
-                        <button type="button" class="btn btn-danger" v-on:click.prevent="deleteKeypair(k)">Delete</button>
+                        <button type="button" class="btn btn-danger" v-on:click.prevent="deleteKeypair(k.keypair.name)">Delete</button>
                     </td>
                 </tr>
         	</tbody>
@@ -33,6 +33,7 @@
         data() {
             return {
                 keypairs: [],
+                lines: '',
             };
         },
         methods: {
@@ -61,7 +62,12 @@
 
             createKeypair() {
                 this.$router.push('/createKeypair');
-            }
+            },
+
+            deleteKeypair: function (keypairName) {
+                var vm = this;
+                axios.delete('api/deleteKeypair/' +keypairName);
+            }, 
         },
         mounted() {
             this.getKeypairs();

@@ -1,4 +1,4 @@
-<?php 
+<?php  
 
 namespace App\Http\Controllers;
 
@@ -82,6 +82,18 @@ class VolumeController extends Controller
         ]);
 
         return $response;
+    }
+
+    public function deleteVolume($volumeID){
+        $client = new \GuzzleHttp\Client();
+        $url = 'http://46.101.65.213/volume/v3/58293217310f47b69785e31aaaad5987/volumes/'.$volumeID;
+        $token = $this->getToken();
+
+        $client->request('DELETE', $url, [
+            'headers' => [
+                'x-auth-token' => $token,
+            ]
+        ]);
     }
 
 

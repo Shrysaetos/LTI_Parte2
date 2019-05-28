@@ -35,7 +35,7 @@
                     <td>{{i["OS-EXT-STS:power_state"]}}</td>
                     <td>
                         <button class="btn btn-info" v-on:click.prevent="editInstance">Edit</button>
-                        <button type="button" class="btn btn-danger" v-on:click.prevent="deleteInstance(f)">Delete</button>
+                        <button type="button" class="btn btn-danger" v-on:click.prevent="deleteInstance(i.id)">Delete</button>
                     </td>
                 </tr>
         	</tbody>
@@ -88,11 +88,8 @@
                 this.$router.push('/instances');
             },
 
-            deleteInstance: function(flow) {
-                axios.delete('api/instances' + flow.id)
-                    .then(response => {
-                        this.getFlavors();
-                    })
+            deleteInstance: function(instanceID) {
+                axios.delete('api/deleteInstance/' + instanceID)
             },
 
             createInstance() {

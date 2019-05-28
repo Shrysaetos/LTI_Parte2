@@ -24,6 +24,8 @@ Route::middleware('auth:api')->post('logout', 'LoginControllerAPI@logout');
 	//Create
 Route::post('createVolume', 'VolumeController@createVolume');
 Route::post('createVolume/{name}/{description}/{size}/{image}', 'VolumeController@createVolume');
+	//Delete
+Route::delete('deleteVolume/{volumeID}', 'VolumeController@deleteVolume');
 
 	//List
 Route::get('/volumes', 'VolumeController@listVolumes');
@@ -35,17 +37,23 @@ Route::post('createVolume', 'VolumeController@createVolume');
 Route::get('keypairs', 'KeypairController@getKeypairs');
 	//create
 Route::post('createKeypair/{name}/{type}/{publicKey}', 'KeypairController@createKeypair');
+	//delete
+Route::delete('deleteKeypair/{keypairName}', 'KeypairController@deleteKeypair');
 
 //Images
 Route::get('images', 'ImageController@getImages');
 	//create
 Route::post('createImage/{name}/{format}/{location}/{disk}/{ram}/{visibility}/{protected}/', 'ImageController@createImage');
+	//delete
+Route::delete('deleteImage/{imageID}', 'ImageController@deleteImage');
 
 //Instances
 Route::get('instances', 'InstanceController@getInstances');
 	//create
 Route::get('zones', 'InstanceController@getZones');
 Route::post('createInstance/{name}/{description}/{zone}/{image}/{size}/{flavor}/{networkId}/{networkName}/{keypair}', 'InstanceController@createInstance');
+	//delete
+Route::delete('deleteInstance/{instanceID}', 'InstanceController@deleteInstance');
 
 //Flavors
 Route::get('flavors', 'FlavorController@getFlavors');

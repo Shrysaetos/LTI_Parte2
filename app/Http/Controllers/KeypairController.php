@@ -74,4 +74,16 @@ class KeypairController extends Controller
         return $response;
 
     }
+
+    public function deleteKeypair($keypairName){
+        $client = new \GuzzleHttp\Client();
+        $url = 'http://46.101.65.213/compute/v2/os-keypairs/'.$keypairName;
+        $token = $this->getToken();
+
+        $client->request('DELETE', $url, [
+            'headers' => [
+                'x-auth-token' => $token,
+            ]
+        ]);
+    }
 }

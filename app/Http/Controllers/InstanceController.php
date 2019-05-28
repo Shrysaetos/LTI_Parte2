@@ -76,4 +76,16 @@ class InstanceController extends Controller
 
     }
 
+    public function deleteInstance($instanceID){
+        $client = new \GuzzleHttp\Client();
+        $url = '46.101.65.213/compute/v2/servers/'.$instanceID;
+        $token = $this->getToken();
+
+        $client->request('DELETE', $url, [
+            'headers' => [
+                'x-auth-token' => $token,
+            ]
+        ]);
+    }
+
 }
