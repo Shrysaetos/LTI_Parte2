@@ -2874,7 +2874,6 @@ module.exports = {
 //
 //
 //
-//
 module.exports = {
   data: function data() {
     return {
@@ -3416,9 +3415,6 @@ module.exports = {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-//
-//
-//
 //
 //
 //
@@ -40796,9 +40792,7 @@ var render = function() {
                   },
                   [_vm._v("Delete")]
                 )
-              ]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(i.addresses))])
+              ])
             ],
             2
           )
@@ -41757,7 +41751,37 @@ var render = function() {
     _vm._m(0),
     _vm._v(" "),
     _c("div", [
-      _c("h4", [_vm._v("Volume list")]),
+      _c("div", [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-info",
+            attrs: { type: "button" },
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                _vm.createVolume()
+              }
+            }
+          },
+          [_vm._v("Create Volume")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-outline-danger",
+            attrs: { type: "button" },
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.goBack($event)
+              }
+            }
+          },
+          [_vm._v("Cancel")]
+        )
+      ]),
       _vm._v(" "),
       _c("table", { staticClass: "table" }, [
         _vm._m(1),
@@ -41837,38 +41861,6 @@ var render = function() {
             )
           }),
           0
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-outline-success",
-            attrs: { type: "button" },
-            on: {
-              click: function($event) {
-                $event.preventDefault()
-                _vm.createVolume()
-              }
-            }
-          },
-          [_vm._v("Create a Volume")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-outline-danger",
-            attrs: { type: "button" },
-            on: {
-              click: function($event) {
-                $event.preventDefault()
-                return _vm.goBack($event)
-              }
-            }
-          },
-          [_vm._v("Cancel")]
         )
       ])
     ])

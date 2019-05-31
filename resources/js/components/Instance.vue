@@ -38,7 +38,6 @@
                         <button class="btn btn-info" v-on:click.prevent="editInstance">Edit</button>
                         <button type="button" class="btn btn-danger" v-on:click.prevent="deleteInstance(i.id)">Delete</button>
                     </td>
-                    <td>{{i.addresses}}</td>
                 </tr>
         	</tbody>
     	</table>
@@ -58,7 +57,7 @@
                 if (!value) return ''
                     value = value.toString()
                     return value.charAt(0).toUpperCase() + value.slice(1)
-            }
+            },
         },
 
         methods: {

@@ -3,10 +3,12 @@
     <div class="jumbotron">
       <h1>Volumes</h1>
     </div>
-    <div>
-        <h4>Volume list</h4>
-        
+    <div> 
+      <div>
+        <button type="button" class="btn btn-info" v-on:click.prevent='createVolume()'>Create Volume</button>
+        <button type="button" class="btn btn-outline-danger" v-on:click.prevent="goBack">Cancel</button>
 
+      </div>
         <table class="table">
                 <thead>
                     <tr>
@@ -44,11 +46,6 @@
                     </tr>
                 </tbody>
         </table>
-      <div>
-        <button type="button" class="btn btn-outline-success" v-on:click.prevent='createVolume()'>Create a Volume</button>
-        <button type="button" class="btn btn-outline-danger" v-on:click.prevent="goBack">Cancel</button>
-
-      </div>
     </div>
   </div>
 </template>
