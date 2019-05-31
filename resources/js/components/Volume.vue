@@ -26,7 +26,8 @@
                 </thead>
                 <tbody>
                     <tr v-for='v in volumes.volumes'>
-                        <td>{{v.name}}</td>
+                        <td v-if='v.name != ""'>{{v.name}}</td>
+                        <td v-line-clamp="lines" v-if='v.name == ""'>{{v.id}}</td>
                         <td>{{v.size}}G</td>
                         <td>{{v.status}}</td>
                         <td v-if= 'consistencygroup_id == null'>-</td>

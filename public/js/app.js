@@ -3466,6 +3466,7 @@ module.exports = {
 //
 //
 //
+//
 module.exports = {
   data: function data() {
     return {
@@ -41792,7 +41793,24 @@ var render = function() {
             return _c(
               "tr",
               [
-                _c("td", [_vm._v(_vm._s(v.name))]),
+                v.name != "" ? _c("td", [_vm._v(_vm._s(v.name))]) : _vm._e(),
+                _vm._v(" "),
+                v.name == ""
+                  ? _c(
+                      "td",
+                      {
+                        directives: [
+                          {
+                            name: "line-clamp",
+                            rawName: "v-line-clamp",
+                            value: _vm.lines,
+                            expression: "lines"
+                          }
+                        ]
+                      },
+                      [_vm._v(_vm._s(v.id))]
+                    )
+                  : _vm._e(),
                 _vm._v(" "),
                 _c("td", [_vm._v(_vm._s(v.size) + "G")]),
                 _vm._v(" "),
