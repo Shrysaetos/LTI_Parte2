@@ -52,25 +52,59 @@
         <div>
             <ul>
                 <li>
-                    <label>Image </label>
-                    <font v-if="image==''" size="3" color="red">*</font>
+                    <label>Select Source Type </label>
+                    <font v-if="source==''" size="3" color="red">*</font>
                     <div>
-                        <select v-model="image">
-                            <option disabled value="">Please select one</option>
-                            <option v-for='s in imageInfo.images'>{{s["name"]}}</option>
+                        <select v-model="source">
+                            <option>Image</option>
+                            <option>Volume</option>
                         </select>
                     </div>
-                </li>
-            </ul>
-            <ul>
-                <li>
-                    <label>Volume size</label>
-                    <font v-if="size==''" size="3" color="red">*</font>
-                    <div>
-                        <input type="number" v-model="size" :min="0">
+                    <br>
+                    <div v-if ="source=='Image'">
+                        <ul>
+                            <li>
+                                <label>Image </label>
+                                <font v-if="image==''" size="3" color="red">*</font>
+                                <div>
+                                    <select v-model="image">
+                                        <option disabled value="">Please select one</option>
+                                        <option v-for='s in imageInfo.images'>{{s["name"]}}</option>
+                                    </select>
+                                </div>
+                            </li>
+                        </ul>
+                        
+                        <ul>
+                            <li>
+                                <label>Volume size</label>
+                                <font v-if="size==''" size="3" color="red">*</font>
+                                <div>
+                                    <input type="number" v-model="size" :min="0">
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div v-if="source=='Volume'">
+                        <ul>
+                            <li>
+                                <label>Volume</label>
+                                <font v-if="volume==''" size="3" color="red">*</font>
+                                <div>
+                                    <select v-model="volume">
+                                        <option disabled value="">Please select one</option>
+                                        <option v-for='v in volumeInfo.volumes' v-if="v['name'] != ''">{{v["name"]}}</option>
+                                        <option v-for='v in volumeInfo.volumes' v-if="v['name'] == ''">{{v["id"]}}</option>
+
+                                    </select>
+                                </div>
+                            </li>
+                        </ul>
+                        
                     </div>
                 </li>
             </ul>
+            
         </div>
     </div>
     <div>
@@ -127,17 +161,35 @@
             </ul>
         </div>
     </div>
+    <div>
+        <h4>Boot index</h4>
+        <div>
+            <ul>
+                <li>
+                    <label>Boot index</label>
+                    <div>
+                        <input type="number" v-model="boot" :min="0">
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
   
     <br><br>
     <div>
-        <button type="button" class="btn btn-outline-success" :disabled="validateCreate" v-on:click.prevent='createInstance(name, description, zone, size, networkName, keypair)'>Create Instance</button>
+        <button type="button" class="btn btn-outline-success" :disabled="validateCreate" v-on:click.prevent='createInstance(name, description, zone, size, networkName, keypair, source, volume, boot)'>Create Instance</button>
         <button type="button" class="btn btn-outline-danger" v-on:click.prevent="goBack">Cancel</button>
     </div>
 
+
+
     <br>
+    <h4>DEBUG</h4>
     <p>Teste imagem: {{image}} - {{imageId}}</p>
     <p>Teste network: {{networkName}} - {{networkId}}</p>
     <p>Teste flavors: {{flavor}} - {{flavorId}}</p>
+    <p>Teste Volumes: {{volume}} --- {{volumeId}}</p>
+    <button type="button" class="btn btn-outline-success" v-on:click.prevent='getVolumeId'>Test Volume</button>
     <br>
 
   </div>
@@ -153,6 +205,7 @@
                 flavorInfo: [],
                 networkInfo: [],
                 keyPairInfo: [],
+                volumeInfo: [],
                 name: '',
                 description: '',
                 zone: '',
@@ -167,6 +220,10 @@
                 typeofmsg: "alert-success",
                 showMessage: false,
                 message: "",
+                source: "Image",
+                volume: '',
+                volumeId: '',
+                boot: '0',
 
                 
             };
@@ -227,12 +284,24 @@
                         vm.keyPairInfo = 'An error occurred.' + error;
                     });
             },
-            createInstance: function (name, description, zone, size, networkName, keypair) {
+            getVolumes: function () {
+                this.volumeInfo = [];
+                var vm = this;
+                    axios.get('api/volumes')
+                    .then(function (response){
+                      vm.volumeInfo = response.data;
+                    })
+                    .catch(function (error){
+                      vm.volumeInfo = 'An error occurred.' + error;
+                    });
+            },  
+            createInstance: function (name, description, zone, size, networkName, keypair, source, volume, boot) {
                 this.instanceInfo = [];
                 var vm = this;
                 this.getImageId();
                 this.getNetworkId();
                 this.getFlavorId();
+                this.getVolumeId();
                 //Verificação variaveis (precisa de ser melhorado)
                 if (this.name == '') {
                     name = 'null';
@@ -256,7 +325,7 @@
                 } else {
                     this.showMessage = false;
                     keypair = '"' + keypair + '"';
-                } 
+                }
 
                 vm.imageId = '"' + vm.imageId + '"';
                 size = '"' + size + '"';
@@ -264,17 +333,25 @@
                 vm.networkId = '"' + vm.networkId + '"';
                 networkName = '"' + networkName + '"';
 
+                if (this.source == 'Image') {
+                    vm.volumeId = 'NULL';
+                } else{ //source == 'Volume'{
+                    vm.imageId = 'NULL';
+                }
 
-                axios.post('api/createInstance/' + name + '/' + description + '/' + zone + '/' + vm.imageId + '/' + size + '/' + vm.flavorId + '/' + vm.networkId + '/' + networkName + '/' + keypair)
+
+                axios.post('api/createInstance/' + name + '/' + description + '/' + zone + '/' + vm.imageId + '/' + size + '/' + vm.flavorId + '/' + vm.networkId + '/' + networkName + '/' + keypair + '/' + vm.volumeId  + '/' + boot)
                     .then(function (response){
                         vm.instanceInfo = response.data;
                     })
                     .catch(function (error){
                         vm.instanceInfo = 'An error occurred.' + error;
                     });
+
+                    //this.goBack();
             },
             getImageId: function () {
-                var vm = this
+                var vm = this;
                 if (vm.image == '') {
                     this.typeofmsg = "alert-danger";
                     this.message = "Please Select a image";
@@ -290,7 +367,7 @@
                 
             },
             getNetworkId: function () {
-                var vm = this
+                var vm = this;
 
                 if (vm.networkName == ''){
                     this.typeofmsg = "alert-danger";
@@ -306,7 +383,7 @@
                 }
             },
             getFlavorId: function () {
-                var vm = this
+                var vm = this;
 
                 if (vm.flavor == ''){
                     this.typeofmsg = "alert-danger";
@@ -321,6 +398,18 @@
                     this.showMessage = false;
                 }
             },
+            getVolumeId: function () {
+                var vm = this;
+
+                for (var i = vm.volumeInfo.volumes.length - 1; i >= 0; i--) {
+                    if(vm.volumeInfo.volumes[i].name == vm.volume){
+                        vm.volumeId = vm.volumeInfo.volumes[i].id;
+                    }
+                    if (i==1 && vm.volumeId == '') {
+                        vm.volumeId = vm.volume;
+                    }
+                }
+            },
 
                          
             goBack() {
@@ -329,7 +418,7 @@
         },
         computed: {
             validateCreate() {
-              return this.name == '' || this.zone == '' || this.image == '' || this.size == '' || this.flavor == '' || this.networkName == '' || this.keypair == '';
+              return this.name == '' || this.zone == '' || this.size == '' || this.flavor == ''/* || this.networkName == ''*/ || this.keypair == '';
             }
         },
         mounted() {
@@ -338,6 +427,7 @@
             this.getFlavors();
             this.getNetworks();
             this.getKeyPair();
+            this.getVolumes();
         }
     };
     /*

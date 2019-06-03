@@ -33,7 +33,7 @@
                     <td v-if='n["port_security_enabled"] == false'>Disabled</td>
                     <td>
                         <button class="btn btn-info" v-on:click.prevent="editNetwork">Edit</button>
-                        <button type="button" class="btn btn-danger" v-on:click.prevent="deleteNetwork(n)">Delete</button>
+                        <button type="button" class="btn btn-danger" v-on:click.prevent="deleteNetwork(n.id)">Delete</button>
                     </td>
                 </tr>
         	</tbody>
@@ -65,14 +65,11 @@
                 this.$router.push('/networks');
             },
 
-            deleteNetwork: function(flow) {
-                axios.delete('api/networks' + network.id)
-                    .then(response => {
-                        this.getNetworks();
-                    })
+            deleteNetwork: function(networkId) {
+                axios.delete('api/deleteNetwork/' + networkId)
             },
 
-            createFlavor() {
+            createNetwork() {
                 this.$router.push('/createNetwork');
             }
         },

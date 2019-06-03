@@ -55,13 +55,36 @@ class InstanceController extends Controller
         return $response;
     }
 
-    public function createInstance($name, $description, $zone, $image, $size, $flavor, $networkId, $networkName, $keypair){
+    public function createInstance($name, $description, $zone, $image, $size, $flavor, $networkId, $networkName, $keypair, $volume, $boot)
+    {
         $client = new \GuzzleHttp\Client();
         $url = '46.101.65.213/compute/v2/servers';
         $token = $this->getToken();
 
-        $body = '{ "server" : { "name" : '.$name.', "description" : '.$description.', "key_name" : '.$keypair.', "availability_zone": '.$zone.', "flavorRef" : '.$flavor.', "networks" : [{ "uuid" : '.$networkId.', "tag": '.$networkName.' }], "block_device_mapping_v2": [{ "uuid": '.$image.', "source_type": "image", "destination_type": "volume", "boot_index": 0, "volume_size": '.$size.', "tag": "createdByApp" }] } }';
-        
+        if ($image != 'NULL') { //criar volume para instancia
+            $body = '{ "server" : { "name" : '.$name.', "description" : '.$description.', "key_name" : '.$keypair.', "availability_zone": '.$zone.', "flavorRef" : '.$flavor.', "networks" : [{ "uuid" : '.$networkId.', "tag": '.$networkName.' }], "block_device_mapping_v2": [{ "uuid": '.$image.', "source_type": "image", "destination_type": "volume", "boot_index": '.$boot.', "volume_size": '.$size.', "tag": "createdByApp" }] } }';
+        }else{ // utilizar volume
+            $body = '{
+                "server" : {
+                    "name" : '.$name.',
+                    "description" : '.$description.',
+                    "key_name" : '.$keypair.',
+                    "availability_zone": '.$zone.',
+                    "flavorRef" : '.$flavor.',
+                    "networks" : [{
+                        "uuid" : '.$networkId.',
+                        "tag": '.$networkName.'
+                    }],
+                    "block_device_mapping_v2": [{
+                        "uuid": "'.$volume.'",
+                        "source_type": "volume",
+                        "destination_type": "volume",
+                        "boot_index": '.$boot.'
+                    }]
+                }
+            }
+            ';
+        }
 
         $response = $client->request('POST', $url, [
             'headers' => [
@@ -86,6 +109,29 @@ class InstanceController extends Controller
                 'x-auth-token' => $token,
             ]
         ]);
+    }
+
+    public function getUrl($instanceID){
+        $client = new \GuzzleHttp\Client();
+        $url = 'http://46.101.65.213/compute/v2/servers/'.$instanceID.'/action';
+        $token = $this->getToken();
+
+        $body = '{
+                    "os-getVNCConsole": {
+                        "type": "novnc"
+                    }
+                }';
+
+        $response = $client->request('POST', $url, [
+            'headers' => [
+                'x-auth-token' => $this->getToken(),
+                'Content-Type' => 'application/json',
+            ],
+            'body' => $body
+        ]);
+
+
+        return $response;
     }
 
 }

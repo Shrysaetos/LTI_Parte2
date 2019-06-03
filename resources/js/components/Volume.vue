@@ -82,6 +82,7 @@
             deleteVolume: function (volumeID) {
                 var vm = this;
                 axios.delete('api/deleteVolume/' +volumeID);
+                //location.reload();  --> muito rapido
             },                  
             goBack() {
                 this.$router.push('/login');

@@ -35,13 +35,14 @@
                     <td v-if='i["OS-EXT-STS:task_state"] != null'>{{i["OS-EXT-STS:task_state"]}}</td>
                     <td>{{i["OS-EXT-STS:power_state"]}}</td>
                     <td>
-                        <button class="btn btn-info" v-on:click.prevent="editInstance">Edit</button>
+                        <button class="btn btn-info" v-on:click.prevent="console(i.id)">Console</button>
                         <button type="button" class="btn btn-danger" v-on:click.prevent="deleteInstance(i.id)">Delete</button>
                     </td>
                 </tr>
         	</tbody>
     	</table>
     	</div>
+        
 </template>
 <script>
     module.exports = {
@@ -49,7 +50,7 @@
             return {
                 instances: [],
                 flavors: [],
-            };
+                url: '',            };
         },
 
         filters: {
@@ -84,6 +85,15 @@
                         vm.flavors = 'An error occurred.' + error;
                     });
             },
+            console(instanceID) {
+                var vm = this;
+                this.getUrl(instanceID);
+                setTimeout(function(){
+                    window.open(vm.url.console.url);
+                }, 3000); 
+                
+
+            },
 
             goBack() {
                 this.$router.push('/instances');
@@ -95,6 +105,17 @@
 
             createInstance() {
                 this.$router.push('/createInstance');
+            },
+
+            getUrl: function (instanceID){
+                var vm = this;
+                axios.post('api/getUrl/' + instanceID)
+                    .then(function (response){
+                        vm.url = response.data;
+                    })
+                    .catch(function (error){
+                        vm.url = 'An error occurred.' + error;
+                    });
             }
         },
         mounted() {

@@ -17,6 +17,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/getUrl/{instanceID}', 'InstanceController@getUrl');
+
 Route::post('login', 'LoginControllerAPI@login'); 
 Route::middleware('auth:api')->post('logout', 'LoginControllerAPI@logout');
 
@@ -51,7 +53,7 @@ Route::delete('deleteImage/{imageID}', 'ImageController@deleteImage');
 Route::get('instances', 'InstanceController@getInstances');
 	//create
 Route::get('zones', 'InstanceController@getZones');
-Route::post('createInstance/{name}/{description}/{zone}/{image}/{size}/{flavor}/{networkId}/{networkName}/{keypair}', 'InstanceController@createInstance');
+Route::post('createInstance/{name}/{description}/{zone}/{image}/{size}/{flavor}/{networkId}/{networkName}/{keypair}/{volume}/{boot}', 'InstanceController@createInstance');
 	//delete
 Route::delete('deleteInstance/{instanceID}', 'InstanceController@deleteInstance');
 
@@ -61,6 +63,10 @@ Route::get('flavors', 'FlavorController@getFlavors');
 //Networks
 Route::get('networks', 'NetworkController@getNetworks');
 Route::get('subnets', 'NetworkController@getSubnets');
+	//delete
+Route::delete('deleteNetwork/{networkId}', 'NetworkController@deleteNetwork');
+	//create
+Route::post('createNetwork/{networkName}/{adminState}/{subnetName}/{address}/{gateway}/{dhcp}', 'NetworkController@createNetwork');
 
 //Security Groups
 Route::get('security_groups', 'SecurityGroupController@getSecurityGroups');
