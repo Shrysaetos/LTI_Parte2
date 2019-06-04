@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::resource('server','ServerController');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
@@ -24,17 +25,14 @@ Route::middleware('auth:api')->post('logout', 'LoginControllerAPI@logout');
 
 //Volumes
 	//Create
-Route::post('createVolume', 'VolumeController@createVolume');
 Route::post('createVolume/{name}/{description}/{size}/{image}', 'VolumeController@createVolume');
 	//Delete
 Route::delete('deleteVolume/{volumeID}', 'VolumeController@deleteVolume');
-
 	//List
 Route::get('/volumes', 'VolumeController@listVolumes');
 Route::get('/listImages', 'VolumeController@listImages');
 
-Route::post('createVolume', 'VolumeController@createVolume');
-
+///{server}/{username}/{password}/{project}
 //Key Pairs
 Route::get('keypairs', 'KeypairController@getKeypairs');
 	//create
@@ -53,7 +51,7 @@ Route::delete('deleteImage/{imageID}', 'ImageController@deleteImage');
 Route::get('instances', 'InstanceController@getInstances');
 	//create
 Route::get('zones', 'InstanceController@getZones');
-Route::post('createInstance/{name}/{description}/{zone}/{image}/{size}/{flavor}/{networkId}/{networkName}/{keypair}/{volume}/{boot}', 'InstanceController@createInstance');
+Route::post('createInstance/{name}/{description}/{zone}/{image}/{size}/{flavor}/{networkId}/{networkName}/{keypair}/{volume}', 'InstanceController@createInstance');
 	//delete
 Route::delete('deleteInstance/{instanceID}', 'InstanceController@deleteInstance');
 
@@ -73,3 +71,6 @@ Route::get('security_groups', 'SecurityGroupController@getSecurityGroups');
 
 //Floating IPs
 Route::get('floatingips', 'FloatingIPController@getFloatingIPs');
+
+Route::post('createTempToken/{server}/{username}/{password}', 'ServerController@createTempToken');
+Route::get('getProjectList/{token}/{server}/{userId}', 'ServerController@getProjectList');

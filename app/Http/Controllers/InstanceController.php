@@ -7,14 +7,29 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Pool;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+//database
+use App\Server;
 
 class InstanceController extends Controller
 {
 
     public function getToken(){
+        //************************
+        //      DATABASE
+        //************************
+        $servers = Server::all();
+        $server = $servers[count($servers)-1];
+        $serverUrl = $server['server'];
+        $username = $server['username'];
+        $password = $server['password'];
+        $tempToken = $server['tempToken'];
+        $project = $server['project'];
+        //************************
+
+
         $client = new \GuzzleHttp\Client();
-        $url = 'http://46.101.65.213/identity/v3/auth/tokens';
-        $body = '{ "auth": { "identity": { "methods": [ "password" ], "password": { "user": { "name": "D-D", "domain": { "name": "Default" }, "password": "D-D" } } }, "scope": { "project": { "id": "58293217310f47b69785e31aaaad5987" } } } }';
+        $url = $serverUrl.'/identity/v3/auth/tokens';
+        $body = '{ "auth": { "identity": { "methods": [ "password" ], "password": { "user": { "name": "'.$username.'", "domain": { "name": "Default" }, "password": "'.$password.'" } } }, "scope": { "project": { "id": "'.$project.'" } } } }';
         $response = $client->request('POST', $url, [
             'headers' => [
                 'Content-Type' => 'application/json',
@@ -26,8 +41,21 @@ class InstanceController extends Controller
     }
 
     public function getInstances(){
+        //************************
+        //      DATABASE
+        //************************
+        $servers = Server::all();
+        $server = $servers[count($servers)-1];
+        $serverUrl = $server['server'];
+        $username = $server['username'];
+        $password = $server['password'];
+        $tempToken = $server['tempToken'];
+        $project = $server['project'];
+        //************************
+
+
         $client = new \GuzzleHttp\Client();
-        $url = 'http://46.101.65.213/compute/v2.1/servers/detail';
+        $url = $serverUrl.'/compute/v2.1/servers/detail';
         $token = $this->getToken();
 
         
@@ -42,8 +70,21 @@ class InstanceController extends Controller
     }
 
     public function getZones(){
+        //************************
+        //      DATABASE
+        //************************
+        $servers = Server::all();
+        $server = $servers[count($servers)-1];
+        $serverUrl = $server['server'];
+        $username = $server['username'];
+        $password = $server['password'];
+        $tempToken = $server['tempToken'];
+        $project = $server['project'];
+        //************************
+
+
         $client = new \GuzzleHttp\Client();
-        $url = 'http://46.101.65.213/compute/v2/os-availability-zone';
+        $url = $serverUrl.'/compute/v2/os-availability-zone';
         $token = $this->getToken();
 
         $response = $client->request('GET', $url, [
@@ -55,14 +96,27 @@ class InstanceController extends Controller
         return $response;
     }
 
-    public function createInstance($name, $description, $zone, $image, $size, $flavor, $networkId, $networkName, $keypair, $volume, $boot)
+    public function createInstance($name, $description, $zone, $image, $size, $flavor, $networkId, $networkName, $keypair, $volume)
     {
+        //************************
+        //      DATABASE
+        //************************
+        $servers = Server::all();
+        $server = $servers[count($servers)-1];
+        $serverUrl = $server['server'];
+        $username = $server['username'];
+        $password = $server['password'];
+        $tempToken = $server['tempToken'];
+        $project = $server['project'];
+        //************************
+
+
         $client = new \GuzzleHttp\Client();
-        $url = '46.101.65.213/compute/v2/servers';
+        $url = $serverUrl.'/compute/v2/servers';
         $token = $this->getToken();
 
         if ($image != 'NULL') { //criar volume para instancia
-            $body = '{ "server" : { "name" : '.$name.', "description" : '.$description.', "key_name" : '.$keypair.', "availability_zone": '.$zone.', "flavorRef" : '.$flavor.', "networks" : [{ "uuid" : '.$networkId.', "tag": '.$networkName.' }], "block_device_mapping_v2": [{ "uuid": '.$image.', "source_type": "image", "destination_type": "volume", "boot_index": '.$boot.', "volume_size": '.$size.', "tag": "createdByApp" }] } }';
+            $body = '{ "server" : { "name" : '.$name.', "description" : '.$description.', "key_name" : '.$keypair.', "availability_zone": '.$zone.', "flavorRef" : '.$flavor.', "networks" : [{ "uuid" : '.$networkId.', "tag": '.$networkName.' }], "block_device_mapping_v2": [{ "uuid": '.$image.', "source_type": "image", "destination_type": "volume", "boot_index": 0, "volume_size": '.$size.', "tag": "createdByApp" }] } }';
         }else{ // utilizar volume
             $body = '{
                 "server" : {
@@ -79,7 +133,7 @@ class InstanceController extends Controller
                         "uuid": "'.$volume.'",
                         "source_type": "volume",
                         "destination_type": "volume",
-                        "boot_index": '.$boot.'
+                        "boot_index": 0
                     }]
                 }
             }
@@ -100,8 +154,21 @@ class InstanceController extends Controller
     }
 
     public function deleteInstance($instanceID){
+        //************************
+        //      DATABASE
+        //************************
+        $servers = Server::all();
+        $server = $servers[count($servers)-1];
+        $serverUrl = $server['server'];
+        $username = $server['username'];
+        $password = $server['password'];
+        $tempToken = $server['tempToken'];
+        $project = $server['project'];
+        //************************
+
+
         $client = new \GuzzleHttp\Client();
-        $url = '46.101.65.213/compute/v2/servers/'.$instanceID;
+        $url = $serverUrl.'/compute/v2/servers/'.$instanceID;
         $token = $this->getToken();
 
         $client->request('DELETE', $url, [
@@ -112,8 +179,21 @@ class InstanceController extends Controller
     }
 
     public function getUrl($instanceID){
+        //************************
+        //      DATABASE
+        //************************
+        $servers = Server::all();
+        $server = $servers[count($servers)-1];
+        $serverUrl = $server['server'];
+        $username = $server['username'];
+        $password = $server['password'];
+        $tempToken = $server['tempToken'];
+        $project = $server['project'];
+        //************************
+
+
         $client = new \GuzzleHttp\Client();
-        $url = 'http://46.101.65.213/compute/v2/servers/'.$instanceID.'/action';
+        $url = $serverUrl.'/compute/v2/servers/'.$instanceID.'/action';
         $token = $this->getToken();
 
         $body = '{

@@ -7,14 +7,28 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Pool;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+//database
+use App\Server;
 
 class NetworkController extends Controller
 {
+     public function getToken(){
+        //************************
+        //      DATABASE
+        //************************
+        $servers = Server::all();
+        $server = $servers[count($servers)-1];
+        $serverUrl = $server['server'];
+        $username = $server['username'];
+        $password = $server['password'];
+        $tempToken = $server['tempToken'];
+        $project = $server['project'];
+        //************************
 
-    public function getToken(){
+
         $client = new \GuzzleHttp\Client();
-        $url = 'http://46.101.65.213/identity/v3/auth/tokens';
-        $body = '{ "auth": { "identity": { "methods": [ "password" ], "password": { "user": { "name": "D-D", "domain": { "name": "Default" }, "password": "D-D" } } }, "scope": { "project": { "id": "58293217310f47b69785e31aaaad5987" } } } }';
+        $url = $serverUrl.'/identity/v3/auth/tokens';
+        $body = '{ "auth": { "identity": { "methods": [ "password" ], "password": { "user": { "name": "'.$username.'", "domain": { "name": "Default" }, "password": "'.$password.'" } } }, "scope": { "project": { "id": "'.$project.'" } } } }';
         $response = $client->request('POST', $url, [
             'headers' => [
                 'Content-Type' => 'application/json',
@@ -26,8 +40,21 @@ class NetworkController extends Controller
     }
 
     public function getNetworks(){
+        //************************
+        //      DATABASE
+        //************************
+        $servers = Server::all();
+        $server = $servers[count($servers)-1];
+        $serverUrl = $server['server'];
+        $username = $server['username'];
+        $password = $server['password'];
+        $tempToken = $server['tempToken'];
+        $project = $server['project'];
+        //************************
+
+
     	$client = new \GuzzleHttp\Client();
-    	$url = 'http://46.101.65.213:9696/v2.0/networks';
+    	$url = $serverUrl.':9696/v2.0/networks';
     	$token = $this->getToken();
 
     	
@@ -42,8 +69,21 @@ class NetworkController extends Controller
     }
 
     public function getSubnets(){
+        //************************
+        //      DATABASE
+        //************************
+        $servers = Server::all();
+        $server = $servers[count($servers)-1];
+        $serverUrl = $server['server'];
+        $username = $server['username'];
+        $password = $server['password'];
+        $tempToken = $server['tempToken'];
+        $project = $server['project'];
+        //************************
+
+
         $client = new \GuzzleHttp\Client();
-        $url = 'http://46.101.65.213:9696/v2.0/subnets';
+        $url = $serverUrl.':9696/v2.0/subnets';
         $token = $this->getToken();
 
         
@@ -58,8 +98,21 @@ class NetworkController extends Controller
     }
 
     public function deleteNetwork($networkId){
+        //************************
+        //      DATABASE
+        //************************
+        $servers = Server::all();
+        $server = $servers[count($servers)-1];
+        $serverUrl = $server['server'];
+        $username = $server['username'];
+        $password = $server['password'];
+        $tempToken = $server['tempToken'];
+        $project = $server['project'];
+        //************************
+
+
         $client = new \GuzzleHttp\Client();
-        $url = '46.101.65.213:9696/v2.0/networks/'.$networkId;
+        $url = $serverUrl.':9696/v2.0/networks/'.$networkId;
         $token = $this->getToken();
 
         $client->request('DELETE', $url, [
@@ -70,9 +123,21 @@ class NetworkController extends Controller
     }
 
     public function createNetwork($networkName, $adminState, $subnetName, $address, $gateway, $dhcp){
+        //************************
+        //      DATABASE
+        //************************
+        $servers = Server::all();
+        $server = $servers[count($servers)-1];
+        $serverUrl = $server['server'];
+        $username = $server['username'];
+        $password = $server['password'];
+        $tempToken = $server['tempToken'];
+        $project = $server['project'];
+        //************************
+
 
         $client = new \GuzzleHttp\Client();
-        $url = 'http://46.101.65.213:9696/v2.0/networks';
+        $url = $serverUrl.':9696/v2.0/networks';
 
         $body = '{
                     "network": {
@@ -107,8 +172,21 @@ class NetworkController extends Controller
     }
 
     public function createSubNet($networkId, $subnetName, $address, $gateway, $dhcp){
+        //************************
+        //      DATABASE
+        //************************
+        $servers = Server::all();
+        $server = $servers[count($servers)-1];
+        $serverUrl = $server['server'];
+        $username = $server['username'];
+        $password = $server['password'];
+        $tempToken = $server['tempToken'];
+        $project = $server['project'];
+        //************************
+
+
         $client = new \GuzzleHttp\Client();
-        $url = 'http://46.101.65.213:9696/v2.0/subnets';
+        $url = $serverUrl.':9696/v2.0/subnets';
 
         $addressFinal = str_replace("]","/",$address);
 

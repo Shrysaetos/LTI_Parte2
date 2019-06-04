@@ -7,14 +7,29 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Pool;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+//database
+use App\Server;
 
 class ImageController extends Controller
 {
 
     public function getToken(){
+        //************************
+        //      DATABASE
+        //************************
+        $servers = Server::all();
+        $server = $servers[count($servers)-1];
+        $serverUrl = $server['server'];
+        $username = $server['username'];
+        $password = $server['password'];
+        $tempToken = $server['tempToken'];
+        $project = $server['project'];
+        //************************
+
+
         $client = new \GuzzleHttp\Client();
-        $url = 'http://46.101.65.213/identity/v3/auth/tokens';
-        $body = '{ "auth": { "identity": { "methods": [ "password" ], "password": { "user": { "name": "D-D", "domain": { "name": "Default" }, "password": "D-D" } } }, "scope": { "project": { "id": "58293217310f47b69785e31aaaad5987" } } } }';
+        $url = $serverUrl.'/identity/v3/auth/tokens';
+        $body = '{ "auth": { "identity": { "methods": [ "password" ], "password": { "user": { "name": "'.$username.'", "domain": { "name": "Default" }, "password": "'.$password.'" } } }, "scope": { "project": { "id": "'.$project.'" } } } }';
         $response = $client->request('POST', $url, [
             'headers' => [
                 'Content-Type' => 'application/json',
@@ -26,8 +41,21 @@ class ImageController extends Controller
     }
 
     public function getImages(){
+        //************************
+        //      DATABASE
+        //************************
+        $servers = Server::all();
+        $server = $servers[count($servers)-1];
+        $serverUrl = $server['server'];
+        $username = $server['username'];
+        $password = $server['password'];
+        $tempToken = $server['tempToken'];
+        $project = $server['project'];
+        //************************
+
+
     	$client = new \GuzzleHttp\Client();
-    	$url = 'http://46.101.65.213/image/v2/images';
+    	$url = $serverUrl.'/image/v2/images';
     	$token = $this->getToken();
 
     	
@@ -42,8 +70,21 @@ class ImageController extends Controller
     }
 
     public function createImage($name, $format, $location, $disk, $ram, $visibility, $protected){
+        //************************
+        //      DATABASE
+        //************************
+        $servers = Server::all();
+        $server = $servers[count($servers)-1];
+        $serverUrl = $server['server'];
+        $username = $server['username'];
+        $password = $server['password'];
+        $tempToken = $server['tempToken'];
+        $project = $server['project'];
+        //************************
+
+
         $client = new \GuzzleHttp\Client();
-        $url = '46.101.65.213/image/v2/images';
+        $url = $serverUrl.'/image/v2/images';
 
         $locationFinal = str_replace("]","/",$location);
         
@@ -78,8 +119,21 @@ class ImageController extends Controller
 
 
     public function deleteImage($imageID){
+        //************************
+        //      DATABASE
+        //************************
+        $servers = Server::all();
+        $server = $servers[count($servers)-1];
+        $serverUrl = $server['server'];
+        $username = $server['username'];
+        $password = $server['password'];
+        $tempToken = $server['tempToken'];
+        $project = $server['project'];
+        //************************
+
+
         $client = new \GuzzleHttp\Client();
-        $url = '46.101.65.213/image/v2/images/'.$imageID;
+        $url = $serverUrl.'/image/v2/images/'.$imageID;
         $token = $this->getToken();
 
         $client->request('DELETE', $url, [

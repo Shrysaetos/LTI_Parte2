@@ -7,8 +7,10 @@
 
 require('./bootstrap');
 window.Vue = require('vue');
+var Vue = require('vue');
+Vue.use(require('vue-resource'));
 
-import Vue       from 'vue';
+//import Vue       from 'vue';
 import lineClamp from 'vue-line-clamp';
 Vue.use(lineClamp, {
 	importCss: true
@@ -63,6 +65,11 @@ const SGRulesComponent = Vue.component('s-g-rules-component', require('./compone
 
 //Floating IPs
 const FloatingIPsComponent = Vue.component('floatingips-component', require('./components/FloatingIP.vue').default);
+
+const CurrentUserComponent = Vue.component('currentUser-component', require('./components/CurrentUser.vue').default);
+const CreateUserComponent = Vue.component('createUser-component', require('./components/CreateUser.vue').default);
+
+
 
 const routes = [
 
@@ -156,19 +163,45 @@ const routes = [
 		path: "/floatingips",
 		name: "floatingips",
 		component: FloatingIPsComponent
+	},
+	{
+		path: "/currentUser",
+		name: "currentUser",
+		component: CurrentUserComponent
+	},
+	{
+		path: "/createUser",
+		name: "createUser",
+		component: CreateUserComponent
 	}
 
 
 ];
 
+
+//Vue.component('server', require('./components/Servers.vue').default);
+
+Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
+
+import server from './components/CurrentUser.vue';
+
+
+
 const router = new VueRouter({
     routes: routes
 });
 
+/*
 const app = new Vue({
     router,
     el: '#app',
     data: {
     	lines: 2
   	}
+});*/
+
+const app = new Vue({
+	router,
+    el: '#app',
+    components :  { server }
 });

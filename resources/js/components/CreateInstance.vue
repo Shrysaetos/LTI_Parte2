@@ -161,23 +161,11 @@
             </ul>
         </div>
     </div>
-    <div>
-        <h4>Boot index</h4>
-        <div>
-            <ul>
-                <li>
-                    <label>Boot index</label>
-                    <div>
-                        <input type="number" v-model="boot" :min="0">
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
+
   
     <br><br>
     <div>
-        <button type="button" class="btn btn-outline-success" :disabled="validateCreate" v-on:click.prevent='createInstance(name, description, zone, size, networkName, keypair, source, volume, boot)'>Create Instance</button>
+        <button type="button" class="btn btn-outline-success" :disabled="validateCreate" v-on:click.prevent='createInstance(name, description, zone, size, networkName, keypair, source, volume)'>Create Instance</button>
         <button type="button" class="btn btn-outline-danger" v-on:click.prevent="goBack">Cancel</button>
     </div>
 
@@ -223,7 +211,6 @@
                 source: "Image",
                 volume: '',
                 volumeId: '',
-                boot: '0',
 
                 
             };
@@ -295,7 +282,7 @@
                       vm.volumeInfo = 'An error occurred.' + error;
                     });
             },  
-            createInstance: function (name, description, zone, size, networkName, keypair, source, volume, boot) {
+            createInstance: function (name, description, zone, size, networkName, keypair, source, volume) {
                 this.instanceInfo = [];
                 var vm = this;
                 this.getImageId();
@@ -340,7 +327,7 @@
                 }
 
 
-                axios.post('api/createInstance/' + name + '/' + description + '/' + zone + '/' + vm.imageId + '/' + size + '/' + vm.flavorId + '/' + vm.networkId + '/' + networkName + '/' + keypair + '/' + vm.volumeId  + '/' + boot)
+                axios.post('api/createInstance/' + name + '/' + description + '/' + zone + '/' + vm.imageId + '/' + size + '/' + vm.flavorId + '/' + vm.networkId + '/' + networkName + '/' + keypair + '/' + vm.volumeId )
                     .then(function (response){
                         vm.instanceInfo = response.data;
                     })

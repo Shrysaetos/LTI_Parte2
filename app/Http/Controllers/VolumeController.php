@@ -7,15 +7,29 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Pool;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+//database
+use App\Server;
 
 
 
 class VolumeController extends Controller
 {    
     public function getToken(){
+        //************************
+        //      DATABASE
+        //************************
+        $servers = Server::all();
+        $server = $servers[count($servers)-1];
+        $serverUrl = $server['server'];
+        $username = $server['username'];
+        $password = $server['password'];
+        $tempToken = $server['tempToken'];
+        $project = $server['project'];
+        //************************
+
         $client = new \GuzzleHttp\Client();
-        $url = 'http://46.101.65.213/identity/v3/auth/tokens';
-        $body = '{ "auth": { "identity": { "methods": [ "password" ], "password": { "user": { "name": "D-D", "domain": { "name": "Default" }, "password": "D-D" } } }, "scope": { "project": { "id": "58293217310f47b69785e31aaaad5987" } } } }';
+        $url = $serverUrl.'/identity/v3/auth/tokens';
+        $body = '{ "auth": { "identity": { "methods": [ "password" ], "password": { "user": { "name": "'.$username.'", "domain": { "name": "Default" }, "password": "'.$password.'" } } }, "scope": { "project": { "id": "'.$project.'" } } } }';
         $response = $client->request('POST', $url, [
             'headers' => [
                 'Content-Type' => 'application/json',
@@ -27,8 +41,20 @@ class VolumeController extends Controller
     }
 
    public function createVolume($name, $description, $size, $image){
+        //************************
+        //      DATABASE
+        //************************
+        $servers = Server::all();
+        $server = $servers[count($servers)-1];
+        $serverUrl = $server['server'];
+        $username = $server['username'];
+        $password = $server['password'];
+        $tempToken = $server['tempToken'];
+        $project = $server['project'];
+        //************************
+
         $client = new \GuzzleHttp\Client();
-        $url = '46.101.65.213/volume/v3/58293217310f47b69785e31aaaad5987/volumes';
+        $url = $serverUrl.'/volume/v3/'.$project.'/volumes';
         $token = $this->getToken();
 
         if ($image == 'NO_IMAGE') {
@@ -55,8 +81,20 @@ class VolumeController extends Controller
 
 
     public function listVolumes(){
+        //************************
+        //      DATABASE
+        //************************
+        $servers = Server::all();
+        $server = $servers[count($servers)-1];
+        $serverUrl = $server['server'];
+        $username = $server['username'];
+        $password = $server['password'];
+        $tempToken = $server['tempToken'];
+        $project = $server['project'];
+        //************************
+
     	$client = new \GuzzleHttp\Client();
-    	$url = 'http://46.101.65.213/volume/v3/58293217310f47b69785e31aaaad5987/volumes/detail';
+    	$url = $serverUrl.'/volume/v3/'.$project.'/volumes/detail';
     	$token = $this->getToken();
 
     	
@@ -71,8 +109,20 @@ class VolumeController extends Controller
     }
 
     public function listImages(){
+        //************************
+        //      DATABASE
+        //************************
+        $servers = Server::all();
+        $server = $servers[count($servers)-1];
+        $serverUrl = $server['server'];
+        $username = $server['username'];
+        $password = $server['password'];
+        $tempToken = $server['tempToken'];
+        $project = $server['project'];
+        //************************
+
         $client = new \GuzzleHttp\Client();
-        $url = 'http://46.101.65.213/image/v2/images';
+        $url = $serverUrl.'/image/v2/images';
         $token = $this->getToken();
 
         $response = $client->request('GET', $url, [
@@ -85,8 +135,20 @@ class VolumeController extends Controller
     }
 
     public function deleteVolume($volumeID){
+        //************************
+        //      DATABASE
+        //************************
+        $servers = Server::all();
+        $server = $servers[count($servers)-1];
+        $serverUrl = $server['server'];
+        $username = $server['username'];
+        $password = $server['password'];
+        $tempToken = $server['tempToken'];
+        $project = $server['project'];
+        //************************
+
         $client = new \GuzzleHttp\Client();
-        $url = 'http://46.101.65.213/volume/v3/58293217310f47b69785e31aaaad5987/volumes/'.$volumeID;
+        $url = $serverUrl.'/volume/v3/'.$project.'/volumes/'.$volumeID;
         $token = $this->getToken();
 
         $client->request('DELETE', $url, [

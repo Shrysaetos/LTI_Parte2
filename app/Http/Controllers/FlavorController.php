@@ -7,14 +7,29 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Pool;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+//database
+use App\Server;
 
 class FlavorController extends Controller
 {
 
     public function getToken(){
+        //************************
+        //      DATABASE
+        //************************
+        $servers = Server::all();
+        $server = $servers[count($servers)-1];
+        $serverUrl = $server['server'];
+        $username = $server['username'];
+        $password = $server['password'];
+        $tempToken = $server['tempToken'];
+        $project = $server['project'];
+        //************************
+
+
         $client = new \GuzzleHttp\Client();
-        $url = 'http://46.101.65.213/identity/v3/auth/tokens';
-        $body = '{ "auth": { "identity": { "methods": [ "password" ], "password": { "user": { "name": "D-D", "domain": { "name": "Default" }, "password": "D-D" } } }, "scope": { "project": { "id": "58293217310f47b69785e31aaaad5987" } } } }';
+        $url = $serverUrl.'/identity/v3/auth/tokens';
+        $body = '{ "auth": { "identity": { "methods": [ "password" ], "password": { "user": { "name": "'.$username.'", "domain": { "name": "Default" }, "password": "'.$password.'" } } }, "scope": { "project": { "id": "'.$project.'" } } } }';
         $response = $client->request('POST', $url, [
             'headers' => [
                 'Content-Type' => 'application/json',
@@ -26,8 +41,21 @@ class FlavorController extends Controller
     }
 
     public function getFlavors(){
+        //************************
+        //      DATABASE
+        //************************
+        $servers = Server::all();
+        $server = $servers[count($servers)-1];
+        $serverUrl = $server['server'];
+        $username = $server['username'];
+        $password = $server['password'];
+        $tempToken = $server['tempToken'];
+        $project = $server['project'];
+        //************************
+
+
     	$client = new \GuzzleHttp\Client();
-    	$url = 'http://46.101.65.213/compute/v2.1/flavors/detail';
+    	$url = $serverUrl.'/compute/v2.1/flavors/detail';
     	$token = $this->getToken();
 
     	
