@@ -4,7 +4,8 @@
             <h1>Images</h1>
         </div>
         <button class="btn btn-info col-lg-2 control-label" v-on:click.prevent="createImage">Create Image</button>
-        <button type="button" class="btn btn-outline-danger" v-on:click.prevent="goBack">Cancel</button>
+        <button type="button" class="btn btn-outline-danger col-lg-2 " v-on:click.prevent="goBack">Cancel</button>
+        <br><br>
     	<table class="table">
         	<thead>
         	    <tr>
@@ -12,6 +13,7 @@
                     <th>Status</th>
                     <th>Protected</th>
                     <th>Public</th>
+                    <th>Actions</th>
         	    </tr>
        		</thead>
         	<tbody>
@@ -22,8 +24,7 @@
                     <td v-if='i.protected == true'>Yes</td>
                     <td v-if='i.visibility == "public"'>Yes</td>
                     <td v-if='i.visibility != "public"'>No</td>
-                    <td
-                        <button class="btn btn-info" v-on:click.prevent="editImage">Edit</button>
+                    <td>
                         <button type="button" class="btn btn-danger" v-on:click.prevent="deleteImage(i.id)">Delete</button>
                     </td>
                 </tr>
@@ -61,7 +62,7 @@
             },
 
             goBack() {
-                this.$router.push('/image');
+                this.$router.push('/currentUser');
             },
 
             deleteImage: function(imageID) {

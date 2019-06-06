@@ -68,9 +68,17 @@ Route::post('createNetwork/{networkName}/{adminState}/{subnetName}/{address}/{ga
 
 //Security Groups
 Route::get('security_groups', 'SecurityGroupController@getSecurityGroups');
+	//create
+Route::post('createSecurityGroup/{name}/{description}', 'SecurityGroupController@createSecurityGroup');
+	//delete
+Route::delete('deleteSecurityGroup/{id}','SecurityGroupController@deleteSecurityGroup');
 
 //Floating IPs
 Route::get('floatingips', 'FloatingIPController@getFloatingIPs');
+	//create
+Route::post('createFloatingIp/{network}/{description}', 'FloatingIPController@createFloatingIp');
+	//delete
+Route::delete('deleteFloatingIP/{id}','FloatingIPController@deleteFloatingIP');
 
 Route::post('createTempToken/{server}/{username}/{password}', 'ServerController@createTempToken');
 Route::get('getProjectList/{token}/{server}/{userId}', 'ServerController@getProjectList');

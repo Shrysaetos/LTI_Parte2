@@ -60,9 +60,13 @@ const CreateKeypairComponent = Vue.component('createkeypair-component', require(
 //Security Groups
 const SecurityGroupsComponent = Vue.component('security-groups-component', require('./components/SecurityGroup.vue').default);
 const SGRulesComponent = Vue.component('s-g-rules-component', require('./components/SecurityGroupRules.vue').default);
+	//create
+const CreateSecurityGroupsComponent = Vue.component('create-security-groups-component', require('./components/CreateSecurityGroup.vue').default);
 
 //Floating IPs
 const FloatingIPsComponent = Vue.component('floatingips-component', require('./components/FloatingIP.vue').default);
+	//create
+const CreateFloatingIPComponent = Vue.component('create-floatingips-component', require('./components/CreateFloatingIp.vue').default);
 
 const CurrentUserComponent = Vue.component('currentUser-component', require('./components/CurrentUser.vue').default);
 const CreateUserComponent = Vue.component('createUser-component', require('./components/CreateUser.vue').default);
@@ -148,6 +152,11 @@ const routes = [
 		component: SecurityGroupsComponent
 	},
 	{
+		path: "/createSecurityGroup",
+		name: "create-security-group",
+		component: CreateSecurityGroupsComponent
+	},
+	{
 		path: "/security_groups/:id",
 		name: "security_groups_rules",
 		component: SGRulesComponent
@@ -156,6 +165,11 @@ const routes = [
 		path: "/floatingips",
 		name: "floatingips",
 		component: FloatingIPsComponent
+	},
+	{
+		path: "/createFloatingIp",
+		name: "create-floatingips",
+		component: CreateFloatingIPComponent
 	},
 	{
 		path: "/currentUser",

@@ -4,7 +4,8 @@
             <h1>Instances</h1>
         </div>
         <button class="btn btn-info col-lg-2 control-label" v-on:click.prevent="createInstance">Create Instance</button>
-        <button type="button" class="btn btn-outline-danger" v-on:click.prevent="goBack">Cancel</button>
+        <button type="button" class="btn btn-outline-danger col-lg-2" v-on:click.prevent="goBack">Cancel</button>
+        <br><br>
     	<table class="table">
         	<thead>
         	    <tr>
@@ -96,7 +97,7 @@
             },
 
             goBack() {
-                this.$router.push('/instances');
+                this.$router.push('/currentUser');
             },
 
             deleteInstance: function(instanceID) {

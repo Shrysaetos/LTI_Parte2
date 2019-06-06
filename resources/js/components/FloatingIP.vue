@@ -3,8 +3,8 @@
         <div class="jumbotron">
             <h1>Floating IPs</h1>
         </div>
-        <button class="btn btn-info col-lg-2 control-label" v-on:click.prevent="createSecurityGroup">Create Security Group</button>
-        <button type="button" class="btn btn-outline-danger" v-on:click.prevent="goBack">Cancel</button>
+        <button class="btn btn-info col-lg-2 control-label" v-on:click.prevent="createFloatingIP">Create Floatig IP</button>
+        <button type="button" class="btn btn-outline-danger col-lg-2" v-on:click.prevent="goBack">Cancel</button>
     	<table class="table">
         	<thead>
         	    <tr>
@@ -25,7 +25,7 @@
                     <td>
                         <button class="btn btn-info" v-on:click.prevent="editFloatingIP(f)">Edit
                         </button>
-                        <button type="button" class="btn btn-danger" v-on:click.prevent="deleteFloatingIP(f)">Delete</button>
+                        <button type="button" class="btn btn-danger" v-on:click.prevent="deleteFloatingIP(f.id)">Delete</button>
                     </td>
                 </tr>
         	</tbody>
@@ -53,22 +53,22 @@
             },
 
             goBack() {
-                this.$router.push('/');
+                this.$router.push('/currentUser');
             },
 
             editFloatingIP: function (id) {
                 this.$router.push('/floatingips/'+ id);
             },
 
-            deleteFloatingIP: function(floatingip) {
-                axios.delete('api/floatingips' + floatingip.id)
+            deleteFloatingIP: function(id) {
+                axios.delete('api/deleteFloatingIP/' + id)
                     .then(response => {
                         this.getFloatingIPs();
                     })
             },
 
             createFloatingIP() {
-                this.$router.push('/createFloatingIP');
+                this.$router.push('/createFloatingIp');
             }
         },
         mounted() {

@@ -4,7 +4,7 @@
             <h1>Security Groups</h1>
         </div>
         <button class="btn btn-info col-lg-2 control-label" v-on:click.prevent="createSecurityGroup">Create Security Group</button>
-        <button type="button" class="btn btn-outline-danger" v-on:click.prevent="goBack">Cancel</button>
+        <button type="button" class="btn btn-outline-danger col-lg-2 " v-on:click.prevent="goBack">Cancel</button>
     	<table class="table">
         	<thead>
         	    <tr>

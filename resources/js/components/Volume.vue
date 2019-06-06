@@ -5,8 +5,9 @@
     </div>
     <div> 
       <div>
-        <button type="button" class="btn btn-info" v-on:click.prevent='createVolume()'>Create Volume</button>
-        <button type="button" class="btn btn-outline-danger" v-on:click.prevent="goBack">Cancel</button>
+        <button class="btn btn-info col-lg-2 control-label" v-on:click.prevent='createVolume()'>Create Volume</button>
+        <button type="button" class="btn btn-outline-danger col-lg-2 " v-on:click.prevent="goBack">Cancel</button>
+        <br><br>
 
       </div>
         <table class="table">
@@ -41,7 +42,6 @@
                         <td v-if='v.encrypted==false'>No</td>
                         <td v-if='v.encrypted==true'>Yes</td>
                         <td>
-                            <button class="btn btn-info" v-on:click.prevent="editVolume">Edit</button>
                             <button type="button" class="btn btn-danger" v-on:click.prevent="deleteVolume(v.id)">Delete</button>
                         </td>
                     </tr>
@@ -85,7 +85,7 @@
                 //location.reload();  --> muito rapido
             },                  
             goBack() {
-                this.$router.push('/login');
+                this.$router.push('/curentUser');
             },
         },
         mounted() {

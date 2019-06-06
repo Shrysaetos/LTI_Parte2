@@ -4,7 +4,8 @@
             <h1>Networks</h1>
         </div>
         <button class="btn btn-info col-lg-2 control-label" v-on:click.prevent="createNetwork">Create Network</button>
-        <button type="button" class="btn btn-outline-danger" v-on:click.prevent="goBack">Cancel</button>
+        <button type="button" class="btn btn-outline-danger col-lg-2 " v-on:click.prevent="goBack">Cancel</button>
+        <br><br>
     	<table class="table">
         	<thead>
         	    <tr>
@@ -32,7 +33,6 @@
                     <td v-if='n["port_security_enabled"] == true'>Enabled</td>
                     <td v-if='n["port_security_enabled"] == false'>Disabled</td>
                     <td>
-                        <button class="btn btn-info" v-on:click.prevent="editNetwork">Edit</button>
                         <button type="button" class="btn btn-danger" v-on:click.prevent="deleteNetwork(n.id)">Delete</button>
                     </td>
                 </tr>
@@ -62,7 +62,7 @@
             },
 
             goBack() {
-                this.$router.push('/networks');
+                this.$router.push('/currentUser');
             },
 
             deleteNetwork: function(networkId) {

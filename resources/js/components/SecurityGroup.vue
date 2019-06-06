@@ -4,7 +4,8 @@
             <h1>Security Groups</h1>
         </div>
         <button class="btn btn-info col-lg-2 control-label" v-on:click.prevent="createSecurityGroup">Create Security Group</button>
-        <button type="button" class="btn btn-outline-danger" v-on:click.prevent="goBack">Cancel</button>
+        <button type="button" class="btn btn-outline-danger col-lg-2 " v-on:click.prevent="goBack">Cancel</button>
+        <br>
     	<table class="table">
         	<thead>
         	    <tr>
@@ -21,7 +22,7 @@
                     <td>{{s.description}}</td>
                     <td>
                         <button class="btn btn-info"> <router-link :to="{ name: 'security_groups_rules', params: {id: s.id}}">Manage Rules </router-link></button>
-                        <button type="button" class="btn btn-danger" v-on:click.prevent="deleteSecurityGroup(s)">Delete</button>
+                        <button type="button" class="btn btn-danger" v-on:click.prevent="deleteSecurityGroup(s.id)">Delete</button>
                     </td>
                 </tr>
         	</tbody>
@@ -49,15 +50,15 @@
             },
 
             goBack() {
-                this.$router.push('/security_groups');
+                this.$router.push('/currentUser');
             },
 
             manageRules: function (id) {
                 this.$router.push('/security_group/'+ id);
             },
 
-            deleteSecurityGroup: function(securitygroup) {
-                axios.delete('api/SecurityGroup' + securitygroup.id)
+            deleteSecurityGroup: function(id) {
+                axios.delete('api/deleteSecurityGroup/' + id)
                     .then(response => {
                         this.getSecurityGroups();
                     })

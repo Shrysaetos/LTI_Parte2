@@ -53,7 +53,6 @@
             </ul>
         </div>
 
-    <p>{{image}}:{{imageId}}</p>
     </div>
     <br>
       <div>

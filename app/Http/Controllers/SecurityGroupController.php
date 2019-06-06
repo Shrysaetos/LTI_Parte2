@@ -67,4 +67,63 @@ class SecurityGroupController extends Controller
 
         return $response;
     }
+
+    public function createSecurityGroup($name, $description){
+        //************************
+        //      DATABASE
+        //************************
+        $servers = Server::all();
+        $server = $servers[count($servers)-1];
+        $serverUrl = $server['server'];
+        $username = $server['username'];
+        $password = $server['password'];
+        $tempToken = $server['tempToken'];
+        $project = $server['project'];
+        //************************
+
+        $client = new \GuzzleHttp\Client();
+        $url = $serverUrl.':9696/v2.0/security-groups';
+        $body = '{
+                "security_group": {
+                    "name": "'.$name.'",
+                    "description": "'.$description.'"
+                }
+            }';
+                    
+
+        $response = $client->request('POST', $url, [
+            'headers' => [
+                'x-auth-token' => $tempToken,
+                'Content-Type' => 'application/json',
+            ],
+            'body' => $body
+        ]);
+
+
+        return $response;
+
+    }
+
+    public function deleteSecurityGroup($id){
+        //************************
+        //      DATABASE
+        //************************
+        $servers = Server::all();
+        $server = $servers[count($servers)-1];
+        $serverUrl = $server['server'];
+        $username = $server['username'];
+        $password = $server['password'];
+        $tempToken = $server['tempToken'];
+        $project = $server['project'];
+        //************************
+
+        $client = new \GuzzleHttp\Client();
+        $url = $serverUrl.':9696/v2.0/security-groups/'.$id;
+
+        $client->request('DELETE', $url, [
+            'headers' => [
+                'x-auth-token' => $tempToken,
+            ]
+        ]);
+    }
 }

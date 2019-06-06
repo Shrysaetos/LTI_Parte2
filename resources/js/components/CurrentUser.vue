@@ -1,4 +1,8 @@
 <template>
+	<div>
+	<div class="jumbotron">
+            <h1>Current User</h1>
+     </div>
 	<table class="table table-bordered table-sptried table-condensed">
 		<thead>
 			<tr>
@@ -20,6 +24,7 @@
 		</tbody>
 		
 	</table>
+	</div>
 </template>
 
 <script>

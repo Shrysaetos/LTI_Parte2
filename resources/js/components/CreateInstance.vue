@@ -171,15 +171,6 @@
 
 
 
-    <br>
-    <h4>DEBUG</h4>
-    <p>Teste imagem: {{image}} - {{imageId}}</p>
-    <p>Teste network: {{networkName}} - {{networkId}}</p>
-    <p>Teste flavors: {{flavor}} - {{flavorId}}</p>
-    <p>Teste Volumes: {{volume}} --- {{volumeId}}</p>
-    <button type="button" class="btn btn-outline-success" v-on:click.prevent='getVolumeId'>Test Volume</button>
-    <br>
-
   </div>
 </template>
 <script>

@@ -74,10 +74,7 @@
       </div>
       <br><br>
 
-      <div>
-          <h3> DEBUG </h3>
-          {{idNetwork}}
-      </div>
+     
 
     </div>
   </div>

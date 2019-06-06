@@ -40,9 +40,7 @@
         <button type="button" :disabled="validateCreate" class="btn btn-outline-success" v-on:click.prevent='createKeypair(name, type, publicKey)'>Create</button>
         <button type="button" class="btn btn-outline-danger" v-on:click.prevent="goBack">Cancel</button>
       </div>
-      <br><br>
-      <p>DEBUG</p>
-      <p>type: {{type}}</p>
+     
     </div>
   </div>
 </template>
@@ -72,10 +70,15 @@
                 .catch(function (error){
                     vm.info = 'An error occurred.' + error;
                 });
-                //this.$router.push('/keypairs');
+                             
+                    this.goBack();
+                
             },           
             goBack() {
-                this.$router.push('/keypairs');
+                var vm = this
+                setTimeout(function(){   
+                vm.$router.push('/keypairs');
+                }, 500);
             },
         },
         computed: {
