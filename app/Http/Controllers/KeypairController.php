@@ -13,32 +13,7 @@ use App\Server;
 class KeypairController extends Controller
 {
 
-    public function getToken(){
-        //************************
-        //      DATABASE
-        //************************
-        $servers = Server::all();
-        $server = $servers[count($servers)-1];
-        $serverUrl = $server['server'];
-        $username = $server['username'];
-        $password = $server['password'];
-        $tempToken = $server['tempToken'];
-        $project = $server['project'];
-        //************************
-
-
-        $client = new \GuzzleHttp\Client();
-        $url = $serverUrl.'/identity/v3/auth/tokens';
-        $body = '{ "auth": { "identity": { "methods": [ "password" ], "password": { "user": { "name": "'.$username.'", "domain": { "name": "Default" }, "password": "'.$password.'" } } }, "scope": { "project": { "id": "'.$project.'" } } } }';
-        $response = $client->request('POST', $url, [
-            'headers' => [
-                'Content-Type' => 'application/json',
-            ],
-            'body' => $body
-        ]);
-        $token = $response->getHeader('X-Subject-Token')[0];
-        return $token;
-    }
+    
 
     public function getKeypairs(){
         //************************
@@ -55,12 +30,11 @@ class KeypairController extends Controller
 
     	$client = new \GuzzleHttp\Client();
     	$url = $serverUrl.'/compute/v2.1/os-keypairs';
-    	$token = $this->getToken();
 
     	
     	$response = $client->request('GET', $url, [
     		'headers' => [
-    			'x-auth-token' => $token,
+    			'x-auth-token' => $tempToken,
     		]
 		]);
 
@@ -102,7 +76,7 @@ class KeypairController extends Controller
 
         $response = $client->request('POST', $url, [
             'headers' => [
-                'x-auth-token' => $this->getToken(),
+                'x-auth-token' => $tempToken,
                 'Content-Type' => 'application/json',
             ],
             'body' => $body
@@ -128,11 +102,10 @@ class KeypairController extends Controller
 
         $client = new \GuzzleHttp\Client();
         $url = $serverUrl.'/compute/v2/os-keypairs/'.$keypairName;
-        $token = $this->getToken();
 
         $client->request('DELETE', $url, [
             'headers' => [
-                'x-auth-token' => $token,
+                'x-auth-token' => $tempToken,
             ]
         ]);
     }

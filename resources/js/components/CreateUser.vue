@@ -72,6 +72,7 @@
 				info: [],
 				projectList: [],
 				servers: [],
+				tokenInfo: [],
 				validated: false,
 				hideValidate: true,
 				noErrors: false,
@@ -100,6 +101,8 @@
 			},
 			createUser(){
 				this.getProjectId();
+				this.getToken();
+
 
 				this.$http.post("/api/server/",this.server).then(response => {
 						this.server = response.data.server;
@@ -179,6 +182,25 @@
 		                            vm.server.project = vm.projectList.projects[i].id;
 		                        }
 		                    }
+			},
+			getToken: function(){
+				this.tokenInfo = [];
+				var vm = this;
+				axios.post('api/getToken/' + vm.serverTemp + '/' + vm.server.username + '/' + vm.server.password + '/' + vm.server.project)
+                .then(function (response){
+                    vm.tokenInfo = response.data;
+                })
+                .catch(function (error){
+                    vm.tokenInfo = 'An error occurred.' + error;
+                });
+                setTimeout(function(){
+                	vm.server.tempToken = vm.tokenInfo;
+				}, 1700);
+
+
+
+
+
 			},
 			goToCurrentUser(){
 				this.$router.push('/currentUser');

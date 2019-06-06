@@ -27,12 +27,12 @@
             <header>
                 <div class="navbar navbar-dark bg-dark shadow-sm">
                     <div class="container d-flex justify-content-between">
-                        <router-link class="navbar-brand d-flex align-items-center" to="/">
+                        <router-link class="navbar-brand d-flex align-items-center" to="/currentUser">
                             <img src="img/auction.svg" width="20" height="20" style="margin-right:20px"/>
                             <strong>DevStack - LTI Parte II</strong>
                         </router-link>
                         
-                        <li class="nav-item">
+                        
                             <div class="dropdown">
                                 <button class="btn btn-primary dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tag="button">Compute</button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -42,16 +42,15 @@
                                     <router-link to="/keypairs" class="dropdown-item">Key Pairs</router-link>
                                 </div>
                             </div>
-                        </li>
-                        <li class="nav-item">
+                        
+                        
                             <div class="dropdown">
                                 <button class="btn btn-primary dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tag="button">Volumes</button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <router-link to="/volumes" class="dropdown-item">Volumes</router-link>
                                 </div>
                             </div>
-                        </li>
-                        <li class="nav-item">
+                        
                             <div class="dropdown">
                                 <button class="btn btn-primary dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tag="button">Networking</button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -60,10 +59,9 @@
                                     <router-link to="/floatingips" class="dropdown-item">Floating IPs</router-link>
                                 </div>
                             </div>
-                        </li>
-                        <li class="nav-item">
-                            <router-link to="/login" class="btn btn-secondary" role="button">Login</router-link>
-                        </li>
+                        
+                            <router-link to="/createUser" class="btn btn-secondary" role="button">Login</router-link>
+                        
                     </div>
                 </div>
             </header>

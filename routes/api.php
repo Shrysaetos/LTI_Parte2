@@ -74,3 +74,4 @@ Route::get('floatingips', 'FloatingIPController@getFloatingIPs');
 
 Route::post('createTempToken/{server}/{username}/{password}', 'ServerController@createTempToken');
 Route::get('getProjectList/{token}/{server}/{userId}', 'ServerController@getProjectList');
+Route::post('getToken/{server}/{username}/{password}/{project}', 'ServerController@getToken');

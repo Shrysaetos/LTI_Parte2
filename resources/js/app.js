@@ -30,8 +30,6 @@ Vue.use(Toasted, {
     type: 'info',
 });
 
-const LoginComponent = Vue.component('login-component', require('./components/Login.vue').default);
-
 //Instances
 const CreateInstanceComponent = Vue.component('createInstance-component', require('./components/CreateInstance.vue').default);
 const InstancesComponent = Vue.component('instances-component', require('./components/Instance.vue').default);
@@ -76,13 +74,8 @@ const routes = [
 	{
 		path: '/',
 		redirect: {
-			name: "login"
+			name: "createUser"
 		}
-	},
-	{
-		path: "/login",
-		name: "login",
-		component: LoginComponent
 	},
 	{
 		path: "/createVolume",

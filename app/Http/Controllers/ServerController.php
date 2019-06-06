@@ -151,4 +151,21 @@ class ServerController extends Controller
 
         return $response;
     }
+
+    public function getToken($server, $username, $password, $project){
+        
+        $client = new \GuzzleHttp\Client();
+        $serverFinal = str_replace("]","/",$server);
+        $url = $serverFinal.'/identity/v3/auth/tokens';
+        $body = '{ "auth": { "identity": { "methods": [ "password" ], "password": { "user": { "name": "'.$username.'", "domain": { "name": "Default" }, "password": "'.$password.'" } } }, "scope": { "project": { "id": "'.$project.'" } } } }';
+        $response = $client->request('POST', $url, [
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'body' => $body
+        ]);
+        $token = $response->getHeader('X-Subject-Token')[0];
+        
+        return $token;
+    }
 }

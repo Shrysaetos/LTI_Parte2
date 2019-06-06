@@ -13,32 +13,6 @@ use App\Server;
 class InstanceController extends Controller
 {
 
-    public function getToken(){
-        //************************
-        //      DATABASE
-        //************************
-        $servers = Server::all();
-        $server = $servers[count($servers)-1];
-        $serverUrl = $server['server'];
-        $username = $server['username'];
-        $password = $server['password'];
-        $tempToken = $server['tempToken'];
-        $project = $server['project'];
-        //************************
-
-
-        $client = new \GuzzleHttp\Client();
-        $url = $serverUrl.'/identity/v3/auth/tokens';
-        $body = '{ "auth": { "identity": { "methods": [ "password" ], "password": { "user": { "name": "'.$username.'", "domain": { "name": "Default" }, "password": "'.$password.'" } } }, "scope": { "project": { "id": "'.$project.'" } } } }';
-        $response = $client->request('POST', $url, [
-            'headers' => [
-                'Content-Type' => 'application/json',
-            ],
-            'body' => $body
-        ]);
-        $token = $response->getHeader('X-Subject-Token')[0];
-        return $token;
-    }
 
     public function getInstances(){
         //************************
@@ -56,12 +30,11 @@ class InstanceController extends Controller
 
         $client = new \GuzzleHttp\Client();
         $url = $serverUrl.'/compute/v2.1/servers/detail';
-        $token = $this->getToken();
 
         
         $response = $client->request('GET', $url, [
             'headers' => [
-                'x-auth-token' => $token,
+                'x-auth-token' => $tempToken,
             ]
         ]);
 
@@ -85,11 +58,10 @@ class InstanceController extends Controller
 
         $client = new \GuzzleHttp\Client();
         $url = $serverUrl.'/compute/v2/os-availability-zone';
-        $token = $this->getToken();
 
         $response = $client->request('GET', $url, [
             'headers' => [
-                'x-auth-token' => $token,
+                'x-auth-token' => $tempToken,
             ]
         ]);
 
@@ -113,7 +85,6 @@ class InstanceController extends Controller
 
         $client = new \GuzzleHttp\Client();
         $url = $serverUrl.'/compute/v2/servers';
-        $token = $this->getToken();
 
         if ($image != 'NULL') { //criar volume para instancia
             $body = '{ "server" : { "name" : '.$name.', "description" : '.$description.', "key_name" : '.$keypair.', "availability_zone": '.$zone.', "flavorRef" : '.$flavor.', "networks" : [{ "uuid" : '.$networkId.', "tag": '.$networkName.' }], "block_device_mapping_v2": [{ "uuid": '.$image.', "source_type": "image", "destination_type": "volume", "boot_index": 0, "volume_size": '.$size.', "tag": "createdByApp" }] } }';
@@ -142,7 +113,7 @@ class InstanceController extends Controller
 
         $response = $client->request('POST', $url, [
             'headers' => [
-                'x-auth-token' => $this->getToken(),
+                'x-auth-token' => $tempToken,
                 'Content-Type' => 'application/json',
             ],
             'body' => $body
@@ -169,11 +140,10 @@ class InstanceController extends Controller
 
         $client = new \GuzzleHttp\Client();
         $url = $serverUrl.'/compute/v2/servers/'.$instanceID;
-        $token = $this->getToken();
 
         $client->request('DELETE', $url, [
             'headers' => [
-                'x-auth-token' => $token,
+                'x-auth-token' => $tempToken,
             ]
         ]);
     }
@@ -194,7 +164,6 @@ class InstanceController extends Controller
 
         $client = new \GuzzleHttp\Client();
         $url = $serverUrl.'/compute/v2/servers/'.$instanceID.'/action';
-        $token = $this->getToken();
 
         $body = '{
                     "os-getVNCConsole": {
@@ -204,7 +173,7 @@ class InstanceController extends Controller
 
         $response = $client->request('POST', $url, [
             'headers' => [
-                'x-auth-token' => $this->getToken(),
+                'x-auth-token' => $tempToken,
                 'Content-Type' => 'application/json',
             ],
             'body' => $body
