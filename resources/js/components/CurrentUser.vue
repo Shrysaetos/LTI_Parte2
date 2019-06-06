@@ -9,7 +9,7 @@
 				<th>Server</th>
 				<th>Username</th>
 				<th>Password</th>
-				<th>Temporary Token</th>
+				<th>Token</th>
 				<th>Project</th>
 			</tr>
 		</thead>
@@ -18,7 +18,7 @@
 				<td>{{  servers[servers.length-1].server  }}</td>
 				<td>{{  servers[servers.length-1].username  }}</td>
 				<td>{{  servers[servers.length-1].password  }}</td>
-				<td>{{  servers[servers.length-1].tempToken  }}</td>
+				<td v-line-clamp="lines">{{  servers[servers.length-1].tempToken  }}</td>
 				<td>{{  servers[servers.length-1].project  }}</td>
 			</tr>
 		</tbody>

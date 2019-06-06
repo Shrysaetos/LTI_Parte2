@@ -11,7 +11,7 @@
             <label>Name</label>
             <font v-if="name==''" size="3" color="red">*</font>
             <div>
-                <input v-model="name" placeholder="Key pair name">
+                <input v-model="name" placeholder="Name">
             </div>
         </div>
         <br>

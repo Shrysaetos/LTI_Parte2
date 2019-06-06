@@ -23,7 +23,6 @@
                     <td v-if='fixed_ip_address != null'>{{f.fixed_ip_address}}</td>
                     <td>{{f.status}}</td>
                     <td>
-                        <button class="btn btn-info" v-on:click.prevent="editFloatingIP(f)">Edit
                         </button>
                         <button type="button" class="btn btn-danger" v-on:click.prevent="deleteFloatingIP(f.id)">Delete</button>
                     </td>

@@ -3235,7 +3235,6 @@ module.exports = {
 //
 //
 //
-//
 module.exports = {
   data: function data() {
     return {
@@ -41155,7 +41154,7 @@ var render = function() {
                   expression: "name"
                 }
               ],
-              attrs: { placeholder: "Key pair name" },
+              attrs: { placeholder: "Name" },
               domProps: { value: _vm.name },
               on: {
                 input: function($event) {
@@ -41847,9 +41846,20 @@ var render = function() {
               _vm._v(_vm._s(_vm.servers[_vm.servers.length - 1].password))
             ]),
             _vm._v(" "),
-            _c("td", [
-              _vm._v(_vm._s(_vm.servers[_vm.servers.length - 1].tempToken))
-            ]),
+            _c(
+              "td",
+              {
+                directives: [
+                  {
+                    name: "line-clamp",
+                    rawName: "v-line-clamp",
+                    value: _vm.lines,
+                    expression: "lines"
+                  }
+                ]
+              },
+              [_vm._v(_vm._s(_vm.servers[_vm.servers.length - 1].tempToken))]
+            ),
             _vm._v(" "),
             _c("td", [
               _vm._v(_vm._s(_vm.servers[_vm.servers.length - 1].project))
@@ -41881,7 +41891,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Password")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Temporary Token")]),
+        _c("th", [_vm._v("Token")]),
         _vm._v(" "),
         _c("th", [_vm._v("Project")])
       ])
@@ -42060,20 +42070,6 @@ var render = function() {
             _c("td", [_vm._v(_vm._s(f.status))]),
             _vm._v(" "),
             _c("td", [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-info",
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      return _vm.editFloatingIP(f)
-                    }
-                  }
-                },
-                [_vm._v("Edit\n                    ")]
-              ),
-              _vm._v(" "),
               _c(
                 "button",
                 {
